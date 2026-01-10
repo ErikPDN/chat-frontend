@@ -1,12 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-interface User {
-  id: string;
-  email: string;
-  username: string;
-  avatar: string;
-}
+import type { User } from '../../user/types/user.types';
 
 interface AuthState {
   token: string | null;
@@ -14,6 +8,8 @@ interface AuthState {
   isAuthenticated: boolean;
   setAuth: (token: string, user: User) => void;
   logout: () => void;
+  isHydrated: boolean;
+  setHydrated: (state: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -24,7 +20,14 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       setAuth: (token, user) => set({ token, user, isAuthenticated: true }),
       logout: () => set({ token: null, user: null, isAuthenticated: false }),
+      isHydrated: false,
+      setHydrated: (state) => set({ isHydrated: state }),
     }),
-    { name: 'auth-storage' } // Salva no localStorage automaticamente
+    {
+      name: 'auth-storage',
+      onRehydrateStorage: () => (state) => {
+        if (state) state.setHydrated(true);
+      },
+    }
   )
 );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../features/auth/stores/useAuthStore';
 import { useToast } from '../shared/hooks/useToast';
+import authService from '../features/auth/services/authService';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -25,23 +26,10 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Erro ao criar conta');
-      }
-
+      const data = await authService.register(formData);
       setAuth(data.access_token, data.user);
-
       addToast('Bem-vindo! Conta criada com sucesso.', 'success');
-      navigate('/chat'); // Redireciona para a rota protegida
-
+      navigate('/chat');
     } catch (error: any) {
       addToast(error.message, 'error');
     } finally {
@@ -101,7 +89,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white font-bold py-3 rounded-full transition-all flex justify-center items-center"
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition-all flex justify-center items-center cursor-pointer"
           >
             {isLoading ? (
               <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
