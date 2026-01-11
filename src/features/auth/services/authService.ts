@@ -1,9 +1,10 @@
 import api from "../../../shared/utils/api";
+import type { User } from "../../user/types/user.types";
 import type { RegisterDTO, LoginDTO } from "../types/auth.types";
 
 export interface AuthResponse {
   acess_token: string;
-  user: any;
+  user: User;
 }
 
 const register = async (payload: RegisterDTO) => {

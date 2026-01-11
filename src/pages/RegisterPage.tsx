@@ -3,6 +3,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../features/auth/stores/useAuthStore';
 import { useToast } from '../shared/hooks/useToast';
 import authService from '../features/auth/services/authService';
+import Input from '../shared/components/Input';
+import Button from '../shared/components/Button';
+import type { AxiosError } from 'axios';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -13,7 +16,8 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState({
     email: '',
     username: '',
-    password: ''
+    password: '',
+    confirmPassword: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,13 +29,21 @@ export default function RegisterPage() {
     e.preventDefault();
     setIsLoading(true);
 
+    if (formData.password !== formData.confirmPassword) {
+      return addToast('As senhas não coincidem.', 'error');
+    }
+
     try {
-      const data = await authService.register(formData);
+      const { email, username, password } = formData;
+      const data = await authService.register({ email, username, password });
       setAuth(data.access_token, data.user);
       addToast('Bem-vindo! Conta criada com sucesso.', 'success');
       navigate('/chat');
-    } catch (error: any) {
-      addToast(error.message, 'error');
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      const errorMessage = axiosError.response?.data?.message || 'Ocorreu um erro inesperado.';
+
+      addToast(errorMessage, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -47,54 +59,53 @@ export default function RegisterPage() {
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Email</label>
-            <input
-              type="email"
-              name="email"
-              required
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all"
-              placeholder="exemplo@email.com"
-              onChange={handleChange}
-              disabled={isLoading}
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Usuário</label>
-            <input
-              type="text"
-              name="username"
-              required
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all"
-              placeholder="seu_usuario"
-              onChange={handleChange}
-              disabled={isLoading}
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Senha</label>
-            <input
-              type="password"
-              name="password"
-              required
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all"
-              placeholder="••••••••"
-              onChange={handleChange}
-              disabled={isLoading}
-            />
-          </div>
-
-          <button
-            type="submit"
+          <Input
+            label="Email"
+            id="email"
+            name="email"
+            type="email"
+            placeholder="exemplo@email.com"
+            required
+            onChange={handleChange}
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition-all flex justify-center items-center cursor-pointer"
-          >
-            {isLoading ? (
-              <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : 'Registrar'}
-          </button>
+          />
+
+          <Input
+            label="Usuário"
+            id="username"
+            name="username"
+            type="text"
+            placeholder="Seu nome de usuário"
+            required
+            onChange={handleChange}
+            disabled={isLoading}
+          />
+
+          <Input
+            label="Senha"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Sua senha"
+            required
+            onChange={handleChange}
+            disabled={isLoading}
+          />
+          <Input
+            label="Confirme a Senha"
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            placeholder="Repita sua senha"
+            required
+            onChange={handleChange}
+            disabled={isLoading}
+          />
+
+
+          <Button type="submit" isLoading={isLoading}>
+            Registrar
+          </Button>
         </form>
 
         <div className="mt-6 text-center">
