@@ -37,8 +37,8 @@ export default function RegisterPage() {
       const { email, username, password } = formData;
       const data = await authService.register({ email, username, password });
       setAuth(data.access_token, data.user);
-      addToast('Bem-vindo! Conta criada com sucesso.', 'success');
-      navigate('/chat');
+      addToast('Conta criada com sucesso!', 'success');
+      navigate('/login');
     } catch (error: unknown) {
       const axiosError = error as AxiosError<{ message: string }>;
       const errorMessage = axiosError.response?.data?.message || 'Ocorreu um erro inesperado.';

@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />}
+          <Route path="/login" element={<LoginPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
