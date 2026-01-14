@@ -1,10 +1,5 @@
 import { useNavigate } from "react-router-dom";
 
-interface SidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
 export default function SidebarLayout() {
   const navigate = useNavigate();
 
@@ -14,13 +9,14 @@ export default function SidebarLayout() {
     { name: "Settings", path: "/settings" },
   ];
 
-  // Mudar o width da sidebar para 64 em telas menores
   return (
     <aside
       className="fixed lg:sticky top-0 left-0 h-screen z-30
-      bg-zinc-700 shadow-lg flex flex-col w-64"
+      bg-zinc-700 shadow-lg flex flex-col w-64 md:w-72"
     >
-
-    </aside>
+      <div className="h-16 flex items-center justify-start px-6">
+        <h1 className="text-xl text-white font-bold">ChatApp</h1>
+      </div>
+    </aside >
   )
 }
