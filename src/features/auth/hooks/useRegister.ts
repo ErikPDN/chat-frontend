@@ -54,14 +54,13 @@ export const useRegister = () => {
 
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
-      // Focar no primeiro campo inválido
       const firstField = newErrors.email
         ? 'email'
         : newErrors.username
-        ? 'username'
-        : newErrors.password
-        ? 'password'
-        : 'confirmPassword';
+          ? 'username'
+          : newErrors.password
+            ? 'password'
+            : 'confirmPassword';
       document.getElementById(firstField)?.focus();
       return false;
     }
@@ -81,10 +80,8 @@ export const useRegister = () => {
       const { email, username, password } = formData;
       const response = await authClient.register({ email, username, password });
 
-      // Salvar token (sem remember-me no registro)
       authClient.saveToken(response.access_token);
 
-      // Atualizar store global
       setAuth(response.access_token, response.user);
 
       addToast('Conta criada com sucesso!', 'success');

@@ -43,7 +43,6 @@ export const useLogin = () => {
 
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
-      // Focar no primeiro campo inválido
       const firstField = newErrors.email ? 'email' : 'password';
       document.getElementById(firstField)?.focus();
       return false;
@@ -64,15 +63,12 @@ export const useLogin = () => {
       const { email, password, rememberMe } = formData;
       const response = await authClient.login({ email, password });
 
-      // Salvar token com persistência condicional
       authClient.saveToken(response.access_token, { remember: rememberMe });
 
-      // Atualizar store global
       setAuth(response.access_token, response.user);
 
       addToast('Bem-vindo!', 'success');
 
-      // Redirecionar para rota original ou /chat
       const from = (location.state as any)?.from?.pathname || '/chat';
       navigate(from, { replace: true });
     } catch (error: any) {
@@ -85,7 +81,6 @@ export const useLogin = () => {
 
   const setField = (name: keyof LoginFormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Limpar erro do campo ao editar
     if (errors[name as keyof LoginErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }

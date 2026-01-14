@@ -1,8 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { ToastContainer } from "./shared/components/ToastContainer"
 import RegisterPage from "./pages/RegisterPage"
-import { PublicRoute } from "./shared/components/ProtectedRoute"
+import { ProtectedRoute, PublicRoute } from "./shared/components/ProtectedRoute"
 import LoginPage from "./pages/LoginPage"
+import NotFoundPage from "./pages/NotFoundPage"
+import ChatPage from "./pages/ChatPage"
 
 function App() {
 
@@ -15,8 +17,14 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<ChatPage />} />
+        </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   )
 }
 

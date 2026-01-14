@@ -7,11 +7,6 @@ export interface AuthResponse {
   user: User;
 }
 
-/**
- * authClient - Centraliza autenticação, persistência de token e normalização de erros
- */
-
-// Persistência de token
 export const saveToken = (token: string, options?: { remember?: boolean }) => {
   const storage = options?.remember ? localStorage : sessionStorage;
   storage.setItem('access_token', token);
@@ -26,7 +21,6 @@ export const clearToken = () => {
   sessionStorage.removeItem('access_token');
 };
 
-// Chamadas de API
 export const login = async (payload: LoginDTO): Promise<AuthResponse> => {
   const { data } = await api.post<AuthResponse>('/auth/login', payload);
   return data;
@@ -37,7 +31,6 @@ export const register = async (payload: RegisterDTO): Promise<AuthResponse> => {
   return data;
 };
 
-// Mapeamento de erros
 export const mapAuthError = (error: any): string => {
   const status = error.response?.status;
   const message = error.response?.data?.message;
