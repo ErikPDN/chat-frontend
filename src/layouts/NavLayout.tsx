@@ -45,7 +45,7 @@ export default function NavLayout() {
 
       <button
         onClick={handleLogout}
-        className="p-3 mb-2 rounded-full text-zinc-400 hover:text-red-500 hover:bg-zinc-700/50 transition-all duration-200"
+        className="p-3 mb-4 rounded-full text-zinc-400 hover:text-red-500 hover:bg-zinc-700/50 transition-all duration-200"
         title="Logout"
       >
         <LogOut size={24} />

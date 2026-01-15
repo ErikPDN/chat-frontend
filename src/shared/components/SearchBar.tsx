@@ -33,14 +33,12 @@ export default function SearchBar({
           className="text-zinc-400"
         />
       </div>
-
       <input
         type="text"
         placeholder={placeholder}
         className={`
           w-full py-2 pl-10 pr-10
           bg-zinc-700/50 
-          border border-zinc-600
           rounded-lg
           text-white text-sm
           placeholder-zinc-400
