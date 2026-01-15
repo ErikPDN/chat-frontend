@@ -1,21 +1,18 @@
 import { MessageSquare, User, LogOut } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useLogout } from "../features/auth/hooks/useLogout";
 
 export default function NavLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const menuItems = [
-    { path: '/chat', label: 'Home', icon: MessageSquare },
+    { path: '/chat', label: 'Chat', icon: MessageSquare },
     { path: '/profile', label: 'Profile', icon: User },
   ];
 
   const isActive = (path: string) => location.pathname === path;
-
-  const handleLogout = () => {
-    // TODO: implementar logout
-    navigate('/login');
-  };
+  const handleLogout = useLogout();
 
   return (
     <nav className="fixed left-0 top-0 h-screen w-20 bg-zinc-800 border-r border-zinc-700 flex flex-col items-center justify-between py-2 shadow-lg">
@@ -28,9 +25,9 @@ export default function NavLayout() {
             <li key={item.path}>
               <button
                 onClick={() => navigate(item.path)}
-                className={`p-3 rounded-lg transition-all duration-200 relative group ${active
-                  ? 'bg-teal-600 text-white'
-                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+                className={`p-3 rounded-full transition-all duration-200 relative group ${active
+                  ? 'bg-zinc-700 text-white'
+                  : 'text-zinc-400 hover:text-white hover:bg-zinc-700/50'
                   }`}
                 title={item.label}
               >
@@ -48,7 +45,7 @@ export default function NavLayout() {
 
       <button
         onClick={handleLogout}
-        className="p-3 mb-2 rounded-lg text-zinc-400 hover:text-red-500 hover:bg-zinc-800 transition-all duration-200"
+        className="p-3 mb-2 rounded-full text-zinc-400 hover:text-red-500 hover:bg-zinc-700/50 transition-all duration-200"
         title="Logout"
       >
         <LogOut size={24} />
