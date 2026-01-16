@@ -4,21 +4,25 @@ import ConversationList from "../features/chat/components/ConversationList";
 
 type ConversationFilterMode = "all" | "unread";
 
+interface SidebarLayoutProps {
+  onSelectConversation?: (conversationId: string) => void;
+}
+
 const filters = [
   { label: "Tudo", mode: "all" },
   { label: "Não Lidas", mode: "unread" },
 ] as const;
 
-export default function SidebarLayout() {
+export default function SidebarLayout({ onSelectConversation }: SidebarLayoutProps) {
   const [activeFilterMode, setActiveFilterMode] = useState<ConversationFilterMode>(
     "all"
   );
 
   return (
     <aside
-      className="fixed top-0 left-20 h-screen z-30
-      bg-zinc-900 shadow-lg flex flex-col w-100
-      border-r border-zinc-700"
+      className="h-screen z-30
+      bg-zinc-900 shadow-lg flex flex-col w-86
+      border-r border-zinc-700 flex-shrink-0"
     >
       <div className="h-16 flex items-center justify-start px-6">
         <h1 className="text-2xl text-white font-bold">ChatApp</h1>
@@ -48,7 +52,7 @@ export default function SidebarLayout() {
       </div>
 
       <div className="flex-1 overflow-y-auto mt-4 px-2">
-        <ConversationList filterMode={activeFilterMode} />
+        <ConversationList filterMode={activeFilterMode} onSelectConversation={onSelectConversation} />
       </div>
 
     </aside >

@@ -6,9 +6,10 @@ type ConversationFilterMode = "all" | "unread";
 
 interface ConversationListProps {
   filterMode: ConversationFilterMode;
+  onSelectConversation?: (id: string) => void;
 }
 
-export default function ConversationList({ filterMode }: ConversationListProps) {
+export default function ConversationList({ filterMode, onSelectConversation }: ConversationListProps) {
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
 
   // Mock data
@@ -71,7 +72,10 @@ export default function ConversationList({ filterMode }: ConversationListProps) 
           key={conversation.id}
           conversation={conversation}
           isActive={activeConversationId === conversation.id}
-          onClick={() => setActiveConversationId(conversation.id)}
+          onClick={() => {
+            setActiveConversationId(conversation.id);
+            onSelectConversation?.(conversation.id);
+          }}
         />
       ))}
     </div>

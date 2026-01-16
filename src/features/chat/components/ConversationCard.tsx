@@ -4,7 +4,7 @@ import type { Conversation } from "../types/chat.types";
 interface ConversationCardProps {
   conversation: Conversation;
   isActive?: boolean;
-  onClick: () => void;
+  onClick?: (id: string) => void;
 }
 
 export default function ConversationCard({
@@ -14,7 +14,7 @@ export default function ConversationCard({
 }: ConversationCardProps) {
   return (
     <button
-      onClick={onClick}
+      onClick={() => onClick?.(conversation.id)}
       type="button"
       aria-pressed={isActive}
       className={`w-full px-3 py-3 flex gap-3 rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900
