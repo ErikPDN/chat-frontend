@@ -63,7 +63,7 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
     return (
       <div className="flex-1 flex items-center justify-center bg-zinc-900">
         <div className="text-center text-zinc-500">
-          <p className="text-lg mb-2">Selecione uma conversa</p>
+          <p className="text-lg text-white mb-2 font-bold">Selecione uma conversa</p>
           <p className="text-sm">Escolha uma conversa na lista para começar a mensagens</p>
         </div>
       </div>
@@ -121,14 +121,17 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
                   }`}
               >
                 {!message.isMine && (
-                  <p className="text-xs font-semibold mb-1 text-green-400">
+                  <p className="text-xs font-semibold text-green-400">
                     {message.senderName}
                   </p>
                 )}
-                <p className="text-sm break-words">{message.text}</p>
-                <span className="text-xs text-zinc-300 mt-1 block text-right">
-                  {message.timestamp}
-                </span>
+                <div className="flex items-end gap-2">
+                  <p className="text-sm break-words flex-1">{message.text}</p>
+                  <span className="text-xs text-zinc-300 flex-shrink-0" />
+                  <span className="text-xs text-zinc-300 flex-shrink-0 self-end translate-y-2 py-1">
+                    {message.timestamp}
+                  </span>
+                </div>
               </div>
             </div>
           ))}

@@ -21,7 +21,8 @@ export default function SidebarLayout({ onSelectConversation }: SidebarLayoutPro
   return (
     <aside
       className="h-screen z-30
-      bg-zinc-900 shadow-lg flex flex-col w-86
+      bg-zinc-900 shadow-lg flex flex-col
+      w-80 md:w-86 lg:w-96 xl:w-120
       border-r border-zinc-700 flex-shrink-0"
     >
       <div className="h-16 flex items-center justify-start px-6">
