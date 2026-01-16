@@ -2,14 +2,22 @@ import { useState } from "react";
 import SearchBar from "../shared/components/SearchBar";
 import ConversationList from "../features/chat/components/ConversationList";
 
+type ConversationFilterMode = "all" | "unread";
+
+const filters = [
+  { label: "Tudo", mode: "all" },
+  { label: "Não Lidas", mode: "unread" },
+] as const;
+
 export default function SidebarLayout() {
-  const [activeFilter, setActiveFilter] = useState<string>("Tudo");
-  const filters = ["Tudo", "Mensagens Não Lidas"];
+  const [activeFilterMode, setActiveFilterMode] = useState<ConversationFilterMode>(
+    "all"
+  );
 
   return (
     <aside
       className="fixed lg:sticky top-0 left-0 h-screen z-30
-      bg-zinc-900 shadow-lg flex flex-col w-72 lg:w-100
+      bg-zinc-900 shadow-lg flex flex-col w-82 md:w-96 lg:w-136
       border-r border-zinc-700"
     >
       <div className="h-16 flex items-center justify-start px-6">
@@ -21,18 +29,18 @@ export default function SidebarLayout() {
 
         <div className="mt-4 px-4">
           <div className="flex gap-2">
-            {filters.map((f) => (
+            {filters.map((filter) => (
               <button
-                key={f}
-                onClick={() => setActiveFilter(f)}
+                key={filter.mode}
+                onClick={() => setActiveFilterMode(filter.mode)}
                 className={`px-3 py-1 text-sm rounded-full transition-all duration-150 border 
-                  ${activeFilter === f
+                  ${activeFilterMode === filter.mode
                     ? "bg-blue-600/25 text-blue-400 border-blue-500/40"
                     : "text-zinc-400 hover:bg-zinc-700/50 hover:text-white border-zinc-800"
                   } focus:outline-none focus:ring-0`}
-                aria-pressed={activeFilter === f}
+                aria-pressed={activeFilterMode === filter.mode}
               >
-                {f}
+                {filter.label}
               </button>
             ))}
           </div>
@@ -40,7 +48,7 @@ export default function SidebarLayout() {
       </div>
 
       <div className="flex-1 overflow-y-auto mt-4 px-2">
-        <ConversationList filter={activeFilter} />
+        <ConversationList filterMode={activeFilterMode} />
       </div>
 
     </aside >

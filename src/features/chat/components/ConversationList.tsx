@@ -2,11 +2,13 @@ import { useState } from "react";
 import ConversationCard from "./ConversationCard";
 import type { Conversation } from "../types/chat.types";
 
+type ConversationFilterMode = "all" | "unread";
+
 interface ConversationListProps {
-  filter: string;
+  filterMode: ConversationFilterMode;
 }
 
-export default function ConversationList({ filter }: ConversationListProps) {
+export default function ConversationList({ filterMode }: ConversationListProps) {
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
 
   // Mock data
@@ -14,7 +16,7 @@ export default function ConversationList({ filter }: ConversationListProps) {
     {
       id: "1",
       name: "Squad Alfa",
-      avatarUrl: "https://via.placeholder.com/48",
+      avatarUrl: "",
       lastMessage: "Willian: @Junior OQ MR do calculo de parcelas, en...",
       lastMessageTimestamp: "2:48 PM",
       unreadCount: 0,
@@ -23,7 +25,7 @@ export default function ConversationList({ filter }: ConversationListProps) {
     {
       id: "2",
       name: "INF Comunicados",
-      avatarUrl: "https://via.placeholder.com/48",
+      avatarUrl: "",
       lastMessage: "Rafael: RS2000",
       lastMessageTimestamp: "2:11 PM",
       unreadCount: 9,
@@ -32,7 +34,7 @@ export default function ConversationList({ filter }: ConversationListProps) {
     {
       id: "3",
       name: "Só os Xandão",
-      avatarUrl: "https://via.placeholder.com/48",
+      avatarUrl: "",
       lastMessage: "Fabricio: Pra quem quiser ai",
       lastMessageTimestamp: "12:31 PM",
       unreadCount: 0,
@@ -41,7 +43,7 @@ export default function ConversationList({ filter }: ConversationListProps) {
     {
       id: "4",
       name: "TI Mercantil",
-      avatarUrl: "https://via.placeholder.com/48",
+      avatarUrl: "",
       lastMessage: "Diogo Maier: kkk",
       lastMessageTimestamp: "8:35 AM",
       unreadCount: 0,
@@ -50,7 +52,7 @@ export default function ConversationList({ filter }: ConversationListProps) {
     {
       id: "5",
       name: "Mãe",
-      avatarUrl: "https://via.placeholder.com/48",
+      avatarUrl: "",
       lastMessage: "Era pra voltar depois e esqueci",
       lastMessageTimestamp: "Ontem",
       unreadCount: 0,
@@ -58,12 +60,9 @@ export default function ConversationList({ filter }: ConversationListProps) {
     },
   ];
 
-  const filteredConversations = mockConversations.filter((conv) => {
-    if (filter === "Mensagens Não Lidas") {
-      return conv.unreadCount > 0;
-    }
-    return true;
-  });
+  const filteredConversations = mockConversations.filter((conv) =>
+    filterMode === "unread" ? conv.unreadCount > 0 : true
+  );
 
   return (
     <div className="flex flex-col gap-1">
