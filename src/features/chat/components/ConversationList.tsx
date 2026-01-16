@@ -19,7 +19,7 @@ export default function ConversationList({ filterMode }: ConversationListProps) 
       avatarUrl: "",
       lastMessage: "Willian: @Junior OQ MR do calculo de parcelas, en...",
       lastMessageTimestamp: "2:48 PM",
-      unreadCount: 0,
+      unreadCount: 1,
       isGroup: true,
     },
     {

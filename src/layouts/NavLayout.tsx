@@ -15,7 +15,7 @@ export default function NavLayout() {
   const handleLogout = useLogout();
 
   return (
-    <nav className="fixed left-0 top-0 h-screen w-20 bg-zinc-800 border-r border-zinc-700 flex flex-col items-center justify-between py-2 shadow-lg">
+    <nav className="fixed left-0 top-0 h-screen w-20 bg-zinc-800 border-r border-zinc-700 flex flex-col items-center justify-between py-2 shadow-lg z-50">
       <ul className="flex flex-col gap-2">
         {menuItems.map((item) => {
           const Icon = item.icon;
@@ -31,10 +31,10 @@ export default function NavLayout() {
                   }`}
                 title={item.label}
               >
-                <Icon size={24} />
+                <Icon size={20} />
 
                 <span className="absolute left-full ml-4 px-2 py-1 bg-zinc-800 text-white text-sm rounded whitespace-nowrap 
-                  opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                   {item.label}
                 </span>
               </button>
@@ -48,7 +48,7 @@ export default function NavLayout() {
         className="p-3 mb-4 rounded-full text-zinc-400 hover:text-red-500 hover:bg-zinc-700/50 transition-all duration-200"
         title="Logout"
       >
-        <LogOut size={24} />
+        <LogOut size={20} />
       </button>
     </nav>
   );

@@ -41,11 +41,16 @@ export default function ConversationCard({
             {conversation.name}
           </h3>
 
-          <span className="text-xs text-zinc-400 ml-2">
-            {/* TODO: converter para Date dnv e formater para string*/}
-            {conversation.lastMessageTimestamp}
-          </span>
-
+          {/* TODO: converter para Date dnv e formater para string*/}
+          {conversation.unreadCount > 0 ? (
+            <span className="text-xs text-blue-400 ml-2">
+              {conversation.lastMessageTimestamp}
+            </span>
+          ) : (
+            <span className="text-xs text-zinc-400 ml-2">
+              {conversation.lastMessageTimestamp}
+            </span>
+          )}
 
         </div>
         <div className="flex justify-between items-center mt-1 gap-2">
@@ -55,7 +60,7 @@ export default function ConversationCard({
 
           {conversation.unreadCount > 0 && (
             <div className="flex-shrink-0 flex items-center">
-              <span className="bg-blue-500 text-white text-xs rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center text-center">
+              <span className="bg-blue-500 text-xs rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center text-center">
                 {conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}
               </span>
             </div>

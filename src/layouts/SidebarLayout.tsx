@@ -16,8 +16,8 @@ export default function SidebarLayout() {
 
   return (
     <aside
-      className="fixed lg:sticky top-0 left-0 h-screen z-30
-      bg-zinc-900 shadow-lg flex flex-col w-82 md:w-96 lg:w-136
+      className="fixed top-0 left-20 h-screen z-30
+      bg-zinc-900 shadow-lg flex flex-col w-100
       border-r border-zinc-700"
     >
       <div className="h-16 flex items-center justify-start px-6">
