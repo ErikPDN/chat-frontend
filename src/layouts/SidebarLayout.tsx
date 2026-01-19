@@ -22,21 +22,21 @@ export default function SidebarLayout({ onSelectConversation }: SidebarLayoutPro
   );
   const [sidebarView, setSidebarView] = useState<SidebarView>("conversations");
 
-
+  // Mudar a logica de seleção de contato para abrir nova conversa
   const handleSelectContact = (contactId: string) => {
     // TODO: Criar nova conversa com esse contato
     console.log("Novo chat com contato:", contactId);
     setSidebarView("conversations");
   };
 
+  // Creio que tenho que mudar essa logica de lugar
   const handleCreateGroup = () => {
     // TODO: Abrir modal/página para criar grupo
     console.log("Criar novo grupo");
   };
 
+  // Creio que tenho que mudar essa logica de lugar
   const handleCreateContact = () => {
-    // TODO: Criar contato
-    console.log("Criar novo contato");
   }
 
   return (
