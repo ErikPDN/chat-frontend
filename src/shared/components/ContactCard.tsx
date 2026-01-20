@@ -1,4 +1,4 @@
-import { LucideIcon } from "lucide-react";
+import { Check, LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
 
 interface ContactCardProps {
@@ -9,6 +9,8 @@ interface ContactCardProps {
   icon?: LucideIcon;
   iconColor?: "blue" | "green" | "zinc";
   isAction?: boolean;
+  showCheckbox?: boolean;
+  isSelected?: boolean;
   onClick: () => void;
 }
 
@@ -25,6 +27,8 @@ export default function ContactCard({
   icon: Icon,
   iconColor = "blue",
   isAction = false,
+  showCheckbox = false,
+  isSelected = false,
   onClick,
 }: ContactCardProps) {
   return (
@@ -44,6 +48,17 @@ export default function ContactCard({
         <p className="text-white font-medium truncate">{name}</p>
         {status && <p className="text-zinc-400 text-sm truncate">{status}</p>}
       </div>
+      {showCheckbox && (
+        <div
+          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+            isSelected
+              ? "bg-blue-500 border-blue-500"
+              : "border-zinc-500"
+          }`}
+        >
+          {isSelected && <Check size={14} className="text-white" strokeWidth={3} />}
+        </div>
+      )}
     </button>
   );
 }

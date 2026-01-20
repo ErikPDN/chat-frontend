@@ -29,15 +29,6 @@ export default function SidebarLayout({ onSelectConversation }: SidebarLayoutPro
     setSidebarView("conversations");
   };
 
-  // Creio que tenho que mudar essa logica de lugar
-  const handleCreateGroup = () => {
-    // TODO: Abrir modal/página para criar grupo
-    console.log("Criar novo grupo");
-  };
-
-  // Creio que tenho que mudar essa logica de lugar
-  const handleCreateContact = () => {
-  }
 
   return (
     <aside
@@ -89,8 +80,6 @@ export default function SidebarLayout({ onSelectConversation }: SidebarLayoutPro
         <SidebarNewChatLayout
           onBack={() => setSidebarView("conversations")}
           onSelectContact={handleSelectContact}
-          onCreateGroup={handleCreateGroup}
-          onCreateContact={handleCreateContact}
         />
       )}
     </aside>

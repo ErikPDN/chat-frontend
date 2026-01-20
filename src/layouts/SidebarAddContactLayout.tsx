@@ -42,7 +42,7 @@ export default function SidebarAddContactLayout(
           <ArrowLeft size={20} />
         </button>
         <div className="flex-1 justify-center flex">
-          <h1 className="text-xl text-white font-semibold">Novo Contato</h1>
+          <h1 className="text-lg text-white font-semibold">Novo Contato</h1>
         </div>
       </div>
 
@@ -68,7 +68,6 @@ export default function SidebarAddContactLayout(
           className="text-white text-sm"
           required
         />
-
 
         <div className="flex-1" />
 

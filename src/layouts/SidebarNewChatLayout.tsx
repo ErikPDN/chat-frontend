@@ -3,14 +3,13 @@ import SearchBar from "../shared/components/SearchBar";
 import ContactCard from "../shared/components/ContactCard";
 import { useState } from "react";
 import SidebarAddContactLayout from "./SidebarAddContactLayout";
+import SidebarCreateGroupLayout from "./SidebarCreateGroupLayout";
 
 type SidebarView = "default" | "add-contact" | "add-group";
 
 interface SidebarNewChatLayoutProps {
   onBack: () => void;
   onSelectContact: (contactId: string) => void;
-  onCreateGroup: () => void;
-  onCreateContact: () => void;
 }
 
 const mockContacts = [
@@ -23,8 +22,6 @@ const mockContacts = [
 export default function SidebarNewChatLayout({
   onBack,
   onSelectContact,
-  onCreateGroup,
-  onCreateContact
 }: SidebarNewChatLayoutProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [sidebarView, setSidebarView] = useState<SidebarView>("default");
@@ -35,6 +32,10 @@ export default function SidebarNewChatLayout({
 
   const handleCreatContact = () => {
     setSidebarView("add-contact");
+  }
+
+  const handleCreateGroup = () => {
+    setSidebarView("add-group");
   }
 
   return (
@@ -50,7 +51,7 @@ export default function SidebarNewChatLayout({
               <ArrowLeft size={20} />
             </button>
             <div className="flex-1 justify-center flex">
-              <h1 className="text-xl text-white font-semibold">Nova Conversa</h1>
+              <h1 className="text-lg text-white font-semibold">Nova Conversa</h1>
             </div>
           </div>
 
@@ -73,7 +74,7 @@ export default function SidebarNewChatLayout({
               icon={Users}
               iconColor="blue"
               isAction
-              onClick={onCreateGroup}
+              onClick={handleCreateGroup}
             />
           </div>
 
@@ -105,6 +106,12 @@ export default function SidebarNewChatLayout({
 
       {sidebarView === "add-contact" && (
         <SidebarAddContactLayout
+          onBack={() => setSidebarView("default")}
+        />
+      )}
+
+      {sidebarView === "add-group" && (
+        <SidebarCreateGroupLayout
           onBack={() => setSidebarView("default")}
         />
       )}
