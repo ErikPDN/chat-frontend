@@ -2,7 +2,7 @@ import { useState } from "react";
 import SearchBar from "../shared/components/SearchBar";
 import ConversationList from "../features/chat/components/ConversationList";
 import { MessageSquarePlus } from "lucide-react";
-import SidebarNewChatLayout from "./SidebarNewChatLayout";
+import NewChatView from "../features/chat/components/NewChatView";
 
 type ConversationFilterMode = "all" | "unread";
 type SidebarView = "conversations" | "new-chat";
@@ -77,7 +77,7 @@ export default function SidebarLayout({ onSelectConversation }: SidebarLayoutPro
           </div>
         </>
       ) : (
-        <SidebarNewChatLayout
+        <NewChatView
           onBack={() => setSidebarView("conversations")}
           onSelectContact={handleSelectContact}
         />

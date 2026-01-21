@@ -1,13 +1,13 @@
 import { ArrowLeft, UserPlus, Users } from "lucide-react";
-import SearchBar from "../shared/components/SearchBar";
-import ContactCard from "../shared/components/ContactCard";
 import { useState } from "react";
-import SidebarAddContactLayout from "./SidebarAddContactLayout";
-import SidebarCreateGroupLayout from "./SidebarCreateGroupLayout";
+import ContactCard from "../../../shared/components/ContactCard";
+import SearchBar from "../../../shared/components/SearchBar";
+import AddContactForm from "./AddContactForm";
+import CreateGroupForm from "./CreateGroupForm";
 
 type SidebarView = "default" | "add-contact" | "add-group";
 
-interface SidebarNewChatLayoutProps {
+interface NewChatViewProps {
   onBack: () => void;
   onSelectContact: (contactId: string) => void;
 }
@@ -19,28 +19,20 @@ const mockContacts = [
   { id: "4", name: "Adenil Vidro", status: "Em reunião", avatar: "👤" },
 ];
 
-export default function SidebarNewChatLayout({
+export default function NewChatView({
   onBack,
   onSelectContact,
-}: SidebarNewChatLayoutProps) {
+}: NewChatViewProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sidebarView, setSidebarView] = useState<SidebarView>("default");
+  const [view, setView] = useState<SidebarView>("default");
 
   const filteredContacts = mockContacts.filter(contact =>
     contact.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleCreatContact = () => {
-    setSidebarView("add-contact");
-  }
-
-  const handleCreateGroup = () => {
-    setSidebarView("add-group");
-  }
-
   return (
     <>
-      {sidebarView === "default" && (
+      {view === "default" && (
         <div className="flex flex-col h-full">
           <div className="h-16 flex items-center px-6">
             <button
@@ -67,14 +59,14 @@ export default function SidebarNewChatLayout({
               icon={UserPlus}
               iconColor="blue"
               isAction
-              onClick={handleCreatContact}
+              onClick={() => setView("add-contact")}
             />
             <ContactCard
               name="Novo grupo"
               icon={Users}
               iconColor="blue"
               isAction
-              onClick={handleCreateGroup}
+              onClick={() => setView("add-group")}
             />
           </div>
 
@@ -104,15 +96,15 @@ export default function SidebarNewChatLayout({
         </div>
       )}
 
-      {sidebarView === "add-contact" && (
-        <SidebarAddContactLayout
-          onBack={() => setSidebarView("default")}
+      {view === "add-contact" && (
+        <AddContactForm
+          onBack={() => setView("default")}
         />
       )}
 
-      {sidebarView === "add-group" && (
-        <SidebarCreateGroupLayout
-          onBack={() => setSidebarView("default")}
+      {view === "add-group" && (
+        <CreateGroupForm
+          onBack={() => setView("default")}
         />
       )}
     </>

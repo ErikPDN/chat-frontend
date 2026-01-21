@@ -1,16 +1,15 @@
-import { useState, type FormEvent } from "react";
-import Button from "../shared/components/Button";
-import Input from "../shared/components/Input";
 import { ArrowLeft } from "lucide-react";
+import { useState, type FormEvent } from "react";
+import Button from "../../../shared/components/Button";
+import Input from "../../../shared/components/Input";
 
-
-interface SidebarNewChatLayoutProps {
+interface AddContactFormProps {
   onBack: () => void;
   onContactAdded?: (contactId: string) => void;
 }
 
-export default function SidebarAddContactLayout(
-  { onBack, onContactAdded }: SidebarNewChatLayoutProps
+export default function AddContactForm(
+  { onBack, onContactAdded }: AddContactFormProps
 ) {
   const [formData, setFormData] = useState({
     id: "",
