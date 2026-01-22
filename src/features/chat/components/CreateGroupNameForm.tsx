@@ -44,7 +44,7 @@ export default function CreateGroupNameForm(
           <ArrowLeft size={20} />
         </button>
         <div className="flex-1 justify-center flex">
-          <h1 className="text-lg text-white font-semibold mr-6">
+          <h1 className="text-lg text-white font-semibold mr-5">
             Nomear este grupo
           </h1>
         </div>
@@ -70,6 +70,7 @@ export default function CreateGroupNameForm(
             onClick={() => fileInputRef.current?.click()}
             className="absolute bottom-0 right-0 bg-white rounded-full p-2 hover:bg-gray-100 transition-colors shadow-lg cursor-pointer"
             aria-label="Adicionar foto"
+
           >
             <Camera size={18} className="text-gray-800" />
           </button>

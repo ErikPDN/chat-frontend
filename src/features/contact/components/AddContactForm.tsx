@@ -1,7 +1,9 @@
 import { ArrowLeft } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { type FormEvent } from "react";
 import Button from "../../../shared/components/Button";
 import Input from "../../../shared/components/Input";
+import { useContactStore } from "../stores/useContactStore";
+import { useAddContact } from "../hooks/useAddContact";
 
 interface AddContactFormProps {
   onBack: () => void;
@@ -11,24 +13,20 @@ interface AddContactFormProps {
 export default function AddContactForm(
   { onBack, onContactAdded }: AddContactFormProps
 ) {
-  const [formData, setFormData] = useState({
-    id: "",
-    name: "",
-  });
-  const [loading, setLoading] = useState(false);
+  const { formData, errors, isLoading, addContact, handleChange } = useAddContact();
+  const addContactToStore = useContactStore((state) => state.addContact);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
-    try {
-      console.log("Adicionando contato:", formData);
-      onContactAdded?.("new-contact-id");
+    const contact = await addContact();
+
+    if (contact) {
+      addContactToStore(contact);
+      onContactAdded?.(contact._id);
       onBack();
-    } finally {
-      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -47,43 +45,51 @@ export default function AddContactForm(
 
       <form onSubmit={handleSubmit} className="flex flex-col flex-1 p-6 gap-4">
         <Input
+          id="contactId"
+          name="contactId"
           type="text"
-          placeholder="Id do usuário"
-          value={formData.id}
-          onChange={(e) =>
-            setFormData({ ...formData, id: e.target.value })
-          }
-          className="text-white text-sm"
-          required
+          label="ID do Usuário"
+          placeholder="ID do usuário"
+          value={formData.contactId}
+          onChange={handleChange}
+          error={errors.contactId}
+          disabled={isLoading}
+          autoFocus
+          className="text-white"
         />
 
         <Input
+          id="nickname"
+          name="nickname"
           type="text"
+          label="Apelido"
           placeholder="Apelido do contato"
-          value={formData.name}
-          onChange={(e) =>
-            setFormData({ ...formData, name: e.target.value })
-          }
-          className="text-white text-sm"
-          required
+          value={formData.nickname}
+          onChange={handleChange}
+          error={errors.nickname}
+          disabled={isLoading}
+          className="text-white"
+
         />
 
         <div className="flex-1" />
 
         <div className="flex gap-3">
           <Button
+            type="button"
             variant="secondary"
             onClick={onBack}
             className="flex-1"
+            disabled={isLoading}
           >
             Cancelar
           </Button>
           <Button
             type="submit"
-            disabled={loading}
+            isLoading={isLoading}
             className="flex-1"
           >
-            {loading ? "Adicionando..." : "Adicionar"}
+            Adicionar
           </Button>
         </div>
       </form>

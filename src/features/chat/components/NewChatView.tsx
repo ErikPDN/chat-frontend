@@ -1,9 +1,10 @@
 import { ArrowLeft, UserPlus, Users } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ContactCard from "../../../shared/components/ContactCard";
 import SearchBar from "../../../shared/components/SearchBar";
-import AddContactForm from "./AddContactForm";
+import AddContactForm from "../../contact/components/AddContactForm";
 import CreateGroupForm from "./CreateGroupForm";
+import { useContacts } from "../../contact/hooks/useContacts";
 
 type SidebarView = "default" | "add-contact" | "add-group";
 
@@ -12,23 +13,20 @@ interface NewChatViewProps {
   onSelectContact: (contactId: string) => void;
 }
 
-const mockContacts = [
-  { id: "1", name: "Adriano", status: "Olá! Eu estou usando o WhatsApp.", avatar: "👤" },
-  { id: "2", name: "Adriano2", status: "Ocupado", avatar: "👤" },
-  { id: "3", name: "Adenil Vidraceiro", status: "", avatar: "👤" },
-  { id: "4", name: "Adenil Vidro", status: "Em reunião", avatar: "👤" },
-];
-
 export default function NewChatView({
   onBack,
   onSelectContact,
 }: NewChatViewProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [view, setView] = useState<SidebarView>("default");
+  const { contacts, isLoading } = useContacts();
 
-  const filteredContacts = mockContacts.filter(contact =>
-    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredContacts = useMemo(() => {
+    return contacts.filter(contact =>
+      contact.nickname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.contactId.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [contacts, searchTerm]);
 
   return (
     <>
@@ -71,19 +69,23 @@ export default function NewChatView({
           </div>
 
           <div className="flex-1 overflow-y-auto px-2">
-            {filteredContacts.length > 0 ? (
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full text-zinc-400">
+                <p>Carregando contatos...</p>
+              </div>
+            ) : filteredContacts.length > 0 ? (
               <div>
                 <p className="text-zinc-400 text-xs font-semibold px-4 py-3 uppercase">
                   Contatos
                 </p>
                 {filteredContacts.map((contact) => (
                   <ContactCard
-                    key={contact.id}
-                    id={contact.id}
-                    name={contact.name}
-                    status={contact.status}
-                    avatar={contact.avatar}
-                    onClick={() => onSelectContact(contact.id)}
+                    key={contact._id}
+                    id={contact._id}
+                    name={contact.nickname}
+                    status={contact.contactId.email}
+                    avatar={contact.contactId.avatar || "👤"}
+                    onClick={() => onSelectContact(contact._id)}
                   />
                 ))}
               </div>
