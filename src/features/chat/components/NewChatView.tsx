@@ -25,7 +25,8 @@ export default function NewChatView({
     return contacts.filter(contact =>
       contact.nickname.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.contactId.username.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
+    .sort((a, b) => a.nickname.localeCompare(b.nickname));
   }, [contacts, searchTerm]);
 
   return (

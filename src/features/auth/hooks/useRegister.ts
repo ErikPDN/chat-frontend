@@ -80,8 +80,6 @@ export const useRegister = () => {
       const { email, username, password } = formData;
       const response = await authClient.register({ email, username, password });
 
-      authClient.saveToken(response.access_token);
-
       setAuth(response.access_token, response.user);
 
       addToast('Conta criada com sucesso!', 'success');

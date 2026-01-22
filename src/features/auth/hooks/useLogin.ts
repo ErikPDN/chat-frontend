@@ -60,10 +60,8 @@ export const useLogin = () => {
     setIsLoading(true);
 
     try {
-      const { email, password, rememberMe } = formData;
+      const { email, password } = formData;
       const response = await authClient.login({ email, password });
-
-      authClient.saveToken(response.access_token, { remember: rememberMe });
 
       setAuth(response.access_token, response.user);
 

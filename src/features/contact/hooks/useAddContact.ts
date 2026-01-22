@@ -4,7 +4,7 @@ import { useToast } from "../../../shared/hooks/useToast";
 import { contactService } from "../service/contactService";
 
 interface AddContactErrors {
-  contactId?: string;
+  userId?: string;
   nickname?: string;
 }
 
@@ -12,7 +12,7 @@ export const useAddContact = () => {
   const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<AddContactRequest>({
-    contactId: "",
+    userId: "",
     nickname: "",
   })
   const [errors, setErrors] = useState<AddContactErrors>({});
@@ -20,8 +20,8 @@ export const useAddContact = () => {
   const validateForm = (): boolean => {
     const newErrors: AddContactErrors = {};
 
-    if (!formData.contactId.trim()) {
-      newErrors.contactId = "ID do usuário é obrigatório";
+    if (!formData.userId.trim()) {
+      newErrors.userId = "ID do usuário é obrigatório";
     }
     if (!formData.nickname.trim()) { newErrors.nickname = "Apelido é obrigatório"; } else if (formData.nickname.length < 2) {
       newErrors.nickname = "Apelido deve ter ao menos 2 caracteres";
@@ -42,9 +42,9 @@ export const useAddContact = () => {
     setIsLoading(true);
 
     try {
-      const contact = await contactService.addContact(formData.contactId, formData.nickname);
+      const contact = await contactService.addContact(formData.userId, formData.nickname);
       addToast('Contato adicionado com sucesso!', 'success');
-      setFormData({ contactId: "", nickname: "" });
+      setFormData({ userId: "", nickname: "" });
 
       return contact;
     } catch (error: any) {

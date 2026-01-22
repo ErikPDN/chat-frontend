@@ -2,8 +2,8 @@ import api from "../../../shared/utils/api";
 import type { Contact, UpdateContactRequest } from "../types/contact.types";
 
 export const contactService = {
-  addContact: async (contactId: string, nickname: string): Promise<Contact> => {
-    const response = await api.post('/contacts', { contactId, nickname });
+  addContact: async (userId: string, nickname: string): Promise<Contact> => {
+    const response = await api.post('/contacts', { contactId: userId, nickname });
     return response.data;
   },
 

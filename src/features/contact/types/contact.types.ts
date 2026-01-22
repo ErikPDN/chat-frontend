@@ -15,9 +15,8 @@ export interface ContactUser {
   avatar: string;
 }
 
-// TODO: mudar contactId para userId
 export interface AddContactRequest {
-  contactId: string;
+  userId: string;
   nickname: string;
 }
 

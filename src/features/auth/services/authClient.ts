@@ -7,20 +7,6 @@ export interface AuthResponse {
   user: User;
 }
 
-export const saveToken = (token: string, options?: { remember?: boolean }) => {
-  const storage = options?.remember ? localStorage : sessionStorage;
-  storage.setItem('access_token', token);
-};
-
-export const getToken = (): string | null => {
-  return localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
-};
-
-export const clearToken = () => {
-  localStorage.removeItem('access_token');
-  sessionStorage.removeItem('access_token');
-};
-
 export const login = async (payload: LoginDTO): Promise<AuthResponse> => {
   const { data } = await api.post<AuthResponse>('/auth/login', payload);
   return data;
@@ -54,8 +40,5 @@ export const mapAuthError = (error: any): string => {
 export default {
   login,
   register,
-  saveToken,
-  getToken,
-  clearToken,
   mapAuthError,
 };
