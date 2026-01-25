@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 import ContactCard from "../../../shared/components/ContactCard";
 import SearchBar from "../../../shared/components/SearchBar";
 import AddContactForm from "../../contact/components/AddContactForm";
-import CreateGroupForm from "./CreateGroupForm";
+import CreateGroupForm from "../../group/components/CreateGroupForm";
 import { useContacts } from "../../contact/hooks/useContacts";
 
 type SidebarView = "default" | "add-contact" | "add-group";
@@ -26,7 +26,7 @@ export default function NewChatView({
       contact.nickname.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.contactId.username.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a, b) => a.nickname.localeCompare(b.nickname));
+      .sort((a, b) => a.nickname.localeCompare(b.nickname));
   }, [contacts, searchTerm]);
 
   return (

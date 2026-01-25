@@ -3,38 +3,26 @@ import { useState } from "react";
 import ContactCard from "../../../shared/components/ContactCard";
 import SearchBar from "../../../shared/components/SearchBar";
 import CreateGroupNameForm from "./CreateGroupNameForm";
+import { useContacts } from "../../contact/hooks/useContacts";
 
 type viewType = "group-name" | "select-contacts";
 
 interface CreateGroupFormProps {
   onBack: () => void;
+  onGroupCreated?: () => void;
 }
-
-interface Contact {
-  id: string;
-  name: string;
-  status: string;
-  avatar: string;
-}
-
-const mockContacts: Contact[] = [
-  { id: "1", name: "Adriano", status: "Olá! Eu estou usando o WhatsApp.", avatar: "👤" },
-  { id: "2", name: "Adriano2", status: "Ocupado", avatar: "👤" },
-  { id: "3", name: "Adenil Vidraceiro", status: "", avatar: "👤" },
-  { id: "4", name: "Adenil Vidro", status: "Em reunião", avatar: "👤" },
-];
 
 
 export default function CreateGroupForm(
-  { onBack }: CreateGroupFormProps
+  { onBack, onGroupCreated }: CreateGroupFormProps
 ) {
-
+  const { contacts, isLoading } = useContacts();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedContacts, setSelectedContacts] = useState<Set<string>>(new Set());
   const [view, setView] = useState<viewType>("select-contacts");
 
-  const filteredContacts = mockContacts.filter(contact =>
-    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredContacts = contacts.filter(contact =>
+    contact.contactId.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const toggleContactSelection = (contactId: string) => {
@@ -57,8 +45,8 @@ export default function CreateGroupForm(
     });
   };
 
-  const selectedContactsList = mockContacts.filter(contact =>
-    selectedContacts.has(contact.id)
+  const selectedContactsList = contacts.filter(contact =>
+    selectedContacts.has(contact.contactId._id)
   );
 
   return (
@@ -91,14 +79,14 @@ export default function CreateGroupForm(
               <div className="flex flex-wrap gap-2">
                 {selectedContactsList.map(contact => (
                   <div
-                    key={contact.id}
+                    key={contact.contactId._id}
                     className="flex items-center gap-1.5 bg-blue-600/20 text-blue-400 rounded-full pl-3 pr-2 py-1.5"
                   >
-                    <span className="text-sm font-medium">{contact.name}</span>
+                    <span className="text-sm font-medium">{contact.nickname || contact.contactId.username}</span>
                     <button
-                      onClick={() => removeContact(contact.id)}
+                      onClick={() => removeContact(contact.contactId._id)}
                       className="hover:bg-blue-600/30 rounded-full p-0.5 transition-colors"
-                      aria-label={`Remover ${contact.name}`}
+                      aria-label={`Remover ${contact.nickname || contact.contactId.username}`}
                     >
                       <X size={14} />
                     </button>
@@ -109,18 +97,22 @@ export default function CreateGroupForm(
           )}
 
           <div className="flex-1 overflow-y-auto px-4 mt-4">
-            {filteredContacts.length > 0 ? (
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full text-zinc-400">
+                <p>Carregando contatos...</p>
+              </div>
+            ) : filteredContacts.length > 0 ? (
               <div>
                 {filteredContacts.map((contact) => (
                   <ContactCard
-                    key={contact.id}
-                    id={contact.id}
-                    name={contact.name}
-                    status={contact.status}
-                    avatar={contact.avatar}
+                    key={contact.contactId._id}
+                    id={contact.contactId._id}
+                    name={contact.nickname || contact.contactId.username}
+                    status={contact.contactId.email}
+                    avatar="👤"
                     showCheckbox={true}
-                    isSelected={selectedContacts.has(contact.id)}
-                    onClick={() => toggleContactSelection(contact.id)}
+                    isSelected={selectedContacts.has(contact.contactId._id)}
+                    onClick={() => toggleContactSelection(contact.contactId._id)}
                   />
                 ))}
               </div>
@@ -143,6 +135,11 @@ export default function CreateGroupForm(
       ) : (
         <CreateGroupNameForm
           onBack={() => setView("select-contacts")}
+          selectedMemberIds={Array.from(selectedContacts)}
+          onSuccess={() => {
+            onGroupCreated?.();
+            onBack();
+          }}
         />
       )}
     </>

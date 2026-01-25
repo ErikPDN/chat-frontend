@@ -1,18 +1,24 @@
 import { ArrowLeft, Camera } from "lucide-react";
 import { useState, useRef } from "react";
+import { useCreateGroup } from "../hooks/useCreateGroup";
+import { useToast } from "../../../shared/hooks/useToast";
 
 interface CreateGroupNameFormProps {
   onBack: () => void;
-  onCreateGroup?: (groupName: string, groupImage?: File) => void;
+  selectedMemberIds: string[];
+  onSuccess?: () => void;
 }
 
 export default function CreateGroupNameForm(
-  { onBack, onCreateGroup }: CreateGroupNameFormProps
+  { onBack, selectedMemberIds, onSuccess }: CreateGroupNameFormProps
 ) {
   const [groupName, setGroupName] = useState("");
+  const [groupDescription, setGroupDescription] = useState("");
   const [groupImage, setGroupImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { createGroup, isLoading } = useCreateGroup();
+  const { addToast } = useToast();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -26,10 +32,20 @@ export default function CreateGroupNameForm(
     }
   };
 
-  const handleCreateGroup = () => {
-    if (groupName.trim()) {
-      onCreateGroup?.(groupName, selectedFile || undefined);
-      onBack();
+  const handleCreateGroup = async () => {
+    if (!groupName.trim()) return;
+
+    const result = await createGroup({
+      name: groupName,
+      description: groupDescription,
+      membersId: selectedMemberIds,
+    });
+
+    if (result.success) {
+      addToast('Grupo criado com sucesso!', 'success');
+      onSuccess?.();
+    } else {
+      addToast(result.error || 'Erro ao criar grupo', 'error');
     }
   };
 
@@ -88,15 +104,22 @@ export default function CreateGroupNameForm(
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
           placeholder="Nome do grupo (obrigatório)"
-          className="w-full max-w-sm px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors mb-6"
+          className="w-full max-w-sm px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors mb-3"
+        />
+
+        <textarea
+          value={groupDescription}
+          onChange={(e) => setGroupDescription(e.target.value)}
+          placeholder="Descrição do grupo (opcional)"
+          rows={3}
+          className="w-full max-w-sm px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors resize-none mb-6"
         />
       </div>
 
-      {/* Botão Criar */}
       <div className="flex justify-end p-6">
         <button
           onClick={handleCreateGroup}
-          disabled={!groupName.trim()}
+          disabled={!groupName.trim() || isLoading}
           className="bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:cursor-not-allowed disabled:text-zinc-500 text-white font-bold px-6 py-2 rounded-lg transition-all cursor-pointer"
         >
           Criar

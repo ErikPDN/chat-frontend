@@ -50,9 +50,9 @@ export default function AddContactForm(
           type="text"
           label="ID do Usuário"
           placeholder="ID do usuário"
-          value={formData.contactId}
+          value={formData.userId}
           onChange={handleChange}
-          error={errors.contactId}
+          error={errors.userId}
           disabled={isLoading}
           autoFocus
           className="text-white"
