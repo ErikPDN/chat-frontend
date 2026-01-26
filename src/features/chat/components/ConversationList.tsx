@@ -1,8 +1,7 @@
 import { useState } from "react";
 import ConversationCard from "./ConversationCard";
-import type { Conversation } from "../types/chat.types";
-
-type ConversationFilterMode = "all" | "unread";
+import { useFilteredConversations } from "../hooks/useFilteredConversation";
+import type { ConversationFilterMode } from "../types/chat.types";
 
 interface ConversationListProps {
   filterMode: ConversationFilterMode;
@@ -11,63 +10,19 @@ interface ConversationListProps {
 
 export default function ConversationList({ filterMode, onSelectConversation }: ConversationListProps) {
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const { conversations, isLoading } = useFilteredConversations(filterMode);
 
-  // Mock data
-  const mockConversations: Conversation[] = [
-    {
-      id: "1",
-      name: "Squad Alfa",
-      avatarUrl: "",
-      lastMessage: "Willian: @Junior OQ MR do calculo de parcelas, en...",
-      lastMessageTimestamp: "2:48 PM",
-      unreadCount: 1,
-      isGroup: true,
-    },
-    {
-      id: "2",
-      name: "INF Comunicados",
-      avatarUrl: "",
-      lastMessage: "Rafael: RS2000",
-      lastMessageTimestamp: "2:11 PM",
-      unreadCount: 9,
-      isGroup: true,
-    },
-    {
-      id: "3",
-      name: "Só os Xandão",
-      avatarUrl: "",
-      lastMessage: "Fabricio: Pra quem quiser ai",
-      lastMessageTimestamp: "12:31 PM",
-      unreadCount: 0,
-      isGroup: true,
-    },
-    {
-      id: "4",
-      name: "TI Mercantil",
-      avatarUrl: "",
-      lastMessage: "Diogo Maier: kkk",
-      lastMessageTimestamp: "8:35 AM",
-      unreadCount: 0,
-      isGroup: false,
-    },
-    {
-      id: "5",
-      name: "Mãe",
-      avatarUrl: "",
-      lastMessage: "Era pra voltar depois e esqueci",
-      lastMessageTimestamp: "Ontem",
-      unreadCount: 0,
-      isGroup: false,
-    },
-  ];
+  if (isLoading) {
+    return <div className="text-zinc-400 text-center py-4">Carregando conversas...</div>;
+  }
 
-  const filteredConversations = mockConversations.filter((conv) =>
-    filterMode === "unread" ? conv.unreadCount > 0 : true
-  );
+  if (conversations.length === 0) {
+    return <div className="text-zinc-400 text-center py-4">Nenhuma conversa encontrada</div>;
+  }
 
   return (
     <div className="flex flex-col gap-1">
-      {filteredConversations.map((conversation) => (
+      {conversations.map((conversation) => (
         <ConversationCard
           key={conversation.id}
           conversation={conversation}
