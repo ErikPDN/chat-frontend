@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useMessage } from "../hooks/useMessage";
 import { useAuthStore } from "../../auth/stores/useAuthStore";
 import type { Conversation } from "../types/chat.types";
+import { useSocket } from "../../../shared/hooks/useSocket";
+import { useToast } from "../../../shared/hooks/useToast";
 
 interface ChatWindowProps {
   conversation?: Conversation | null;
@@ -11,10 +13,13 @@ interface ChatWindowProps {
 export default function ChatWindow({ conversation }: ChatWindowProps) {
   const [messageInput, setMessageInput] = useState("");
   const { user } = useAuthStore();
-  const { messages, isLoading } = useMessage({
+  const [isSending, setIsSending] = useState(false);
+  const { addToast } = useToast();
+  const { messages, isLoading, addMessage } = useMessage({
     conversationId: conversation?.id || null,
     isGroup: conversation?.isGroup || false
   });
+  const socket = useSocket();
 
   if (!conversation) {
     return (
@@ -28,10 +33,62 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
   }
 
   const handleSend = () => {
-    if (messageInput.trim()) {
-      // TODO: Enviar mensagem
-      console.log("Enviando:", messageInput);
-      setMessageInput("");
+    if (!messageInput.trim() || !conversation || !socket) return;
+
+    setIsSending(true)
+    const messageContent = messageInput;
+    setMessageInput("");
+
+    try {
+      if (conversation.isGroup) {
+        socket.emit('sendGroupMessage', {
+          groupId: conversation.id,
+          content: messageContent,
+        }, (response: { success?: boolean; error?: string; message?: any }) => {
+          if (response.success && response.message) {
+            addMessage({
+              id: response.message._id,
+              conversationId: conversation.id,
+              content: messageContent,
+              senderId: user!.id,
+              senderName: user!.username,
+              senderAvatar: user!.avatarUrl,
+              timestamp: new Date().toISOString(),
+              createdAt: new Date().toISOString(),
+            });
+          } else if (!response.success) {
+            addToast(response.error || "Erro ao enviar mensagem", "error");
+            setMessageInput(messageContent);
+          }
+          setIsSending(false);
+        });
+      } else {
+        socket.emit('sendMessage', {
+          receiverId: conversation.id,
+          content: messageContent,
+        }, (response: { success?: boolean; error?: string; message?: any }) => {
+          if (response.success && response.message) {
+            addMessage({
+              id: response.message._id,
+              conversationId: conversation.id,
+              content: messageContent,
+              senderId: user!.id,
+              senderName: user!.username,
+              senderAvatar: user!.avatarUrl,
+              timestamp: new Date().toISOString(),
+              createdAt: new Date().toISOString(),
+            });
+          } else if (!response.success) {
+            addToast(response.error || "Erro ao enviar mensagem", "error");
+            setMessageInput(messageContent);
+          }
+          setIsSending(false);
+        });
+      }
+    } catch {
+      addToast("Erro ao enviar mensagem", "error");
+      setMessageInput(messageContent);
+      setIsSending(false);
     }
   };
 
@@ -126,7 +183,7 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
 
         <button
           onClick={handleSend}
-          disabled={!messageInput.trim()}
+          disabled={!messageInput.trim() || isSending}
           className="text-blue-500 hover:text-blue-400 transition-colors p-2 rounded-full hover:bg-zinc-700/50 disabled:text-zinc-600 disabled:cursor-not-allowed"
           title="Enviar"
         >

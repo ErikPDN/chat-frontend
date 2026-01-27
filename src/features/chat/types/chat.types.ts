@@ -1,3 +1,5 @@
+import type { UserConversation } from "../../user/types/user.types";
+
 export interface Conversation {
   id: string;
   name: string;
@@ -23,10 +25,25 @@ export interface ConversationResponse {
 
 export type ConversationFilterMode = 'all' | 'unread';
 
-export interface Sender {
+export interface MessageP2PResponse {
   _id: string;
-  username: string;
-  avatar?: string;
+  senderId: UserConversation;
+  receiverId: UserConversation;
+  content: string;
+  isRead: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+export interface MessageGroupResponse {
+  _id: string;
+  groupId: string;
+  senderId: UserConversation;
+  content: string;
+  isRead: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
 }
 
 export interface Message {
@@ -40,14 +57,9 @@ export interface Message {
   createdAt: string;
 }
 
-export interface MessageResponse {
-  _id: string;
-  conversationId: string;
+export type MessageResponse = MessageP2PResponse | MessageGroupResponse;
+
+export interface SendMessageRequest {
+  receiverId: string;
   content: string;
-  senderId: Sender;
-  receiverId?: Sender;
-  timestamp: string;
-  createdAt: string;
-  isRead?: boolean;
-  updatedAt?: string;
 }

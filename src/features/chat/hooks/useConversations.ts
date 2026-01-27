@@ -1,12 +1,12 @@
-import { useState, useEffect, useCallback } from 'react'; // 1. Importe o useCallback
+import { useState, useEffect, useCallback } from 'react';
 import { conversationService } from '../service/conversationService';
-import type { Conversation } from '../types/chat.types';
+import { useConversationStore } from '../stores/useConversationStore';
 import { useToast } from '../../../shared/hooks/useToast';
 
 export const useConversations = () => {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { addToast } = useToast();
+  const { conversations, setConversations } = useConversationStore();
 
   const fetchConversations = useCallback(async () => {
     setIsLoading(true);
@@ -18,7 +18,7 @@ export const useConversations = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [addToast]);
+  }, [addToast, setConversations]);
 
   useEffect(() => {
     fetchConversations();

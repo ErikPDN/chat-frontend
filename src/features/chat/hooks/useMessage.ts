@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useToast } from "../../../shared/hooks/useToast";
 import { messageService } from "../service/messageService";
 import type { Message } from "../types/chat.types";
+import { useMessageListener } from "./useMessageListener";
 
 interface UseMessageProps {
   conversationId: string | null;
@@ -10,8 +11,7 @@ interface UseMessageProps {
 
 export const useMessage = ({ conversationId, isGroup }: UseMessageProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const { addToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false); const { addToast } = useToast();
 
   const fetchMessages = useCallback(async () => {
     if (!conversationId) {
@@ -34,5 +34,21 @@ export const useMessage = ({ conversationId, isGroup }: UseMessageProps) => {
     fetchMessages();
   }, [fetchMessages]);
 
-  return { messages, isLoading, refetch: fetchMessages };
+  const handleNewMessage = useCallback((newMessage: Message) => {
+    if (newMessage.conversationId === conversationId) {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    }
+  }, [conversationId]);
+
+  const addMessage = useCallback((message: Message) => {
+    setMessages((prevMessages) => [...prevMessages, message]);
+  }, []);
+
+  useMessageListener({
+    conversationId,
+    isGroup,
+    onNewMessage: handleNewMessage,
+  });
+
+  return { messages, isLoading, refetch: fetchMessages, addMessage };
 };

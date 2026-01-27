@@ -7,3 +7,9 @@ export interface User {
   isActive: boolean;
   lastSeen?: Date;
 }
+
+export interface UserConversation {
+   _id: string;
+  username: string;
+  avatar?: string;
+}

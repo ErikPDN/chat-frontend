@@ -3,6 +3,7 @@ import SearchBar from "../shared/components/SearchBar";
 import ConversationList from "../features/chat/components/ConversationList";
 import { MessageSquarePlus } from "lucide-react";
 import NewChatView from "../features/chat/components/NewChatView";
+import { useConversationStore } from "../features/chat/stores/useConversationStore";
 import type { Conversation } from "../features/chat/types/chat.types";
 import type { Contact } from "../features/contact/types/contact.types";
 
@@ -23,10 +24,11 @@ export default function SidebarLayout({ onSelectConversation }: SidebarLayoutPro
     "all"
   );
   const [sidebarView, setSidebarView] = useState<SidebarView>("conversations");
+  const { addConversation } = useConversationStore();
 
   const handleSelectContact = (contact: Contact) => {
     const conversation: Conversation = {
-      id: contact.userId,
+      id: contact.contactId._id,
       name: contact.nickname || contact.contactId.username,
       avatarUrl: contact.contactId.avatar || "",
       lastMessage: "",
@@ -35,6 +37,7 @@ export default function SidebarLayout({ onSelectConversation }: SidebarLayoutPro
       isGroup: false,
     };
     
+    addConversation(conversation);
     onSelectConversation?.(conversation);
     setSidebarView("conversations");
   }; 
