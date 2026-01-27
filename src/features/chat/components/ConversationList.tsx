@@ -1,11 +1,11 @@
 import { useState } from "react";
 import ConversationCard from "./ConversationCard";
 import { useFilteredConversations } from "../hooks/useFilteredConversation";
-import type { ConversationFilterMode } from "../types/chat.types";
+import type { ConversationFilterMode, Conversation } from "../types/chat.types";
 
 interface ConversationListProps {
   filterMode: ConversationFilterMode;
-  onSelectConversation?: (id: string) => void;
+  onSelectConversation?: (conversation: Conversation) => void;
 }
 
 export default function ConversationList({ filterMode, onSelectConversation }: ConversationListProps) {
@@ -29,7 +29,7 @@ export default function ConversationList({ filterMode, onSelectConversation }: C
           isActive={activeConversationId === conversation.id}
           onClick={() => {
             setActiveConversationId(conversation.id);
-            onSelectConversation?.(conversation.id);
+            onSelectConversation?.(conversation);
           }}
         />
       ))}

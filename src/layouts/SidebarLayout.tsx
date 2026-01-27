@@ -3,12 +3,14 @@ import SearchBar from "../shared/components/SearchBar";
 import ConversationList from "../features/chat/components/ConversationList";
 import { MessageSquarePlus } from "lucide-react";
 import NewChatView from "../features/chat/components/NewChatView";
+import type { Conversation } from "../features/chat/types/chat.types";
+import type { Contact } from "../features/contact/types/contact.types";
 
 type ConversationFilterMode = "all" | "unread";
 type SidebarView = "conversations" | "new-chat";
 
 interface SidebarLayoutProps {
-  onSelectConversation?: (conversationId: string) => void;
+  onSelectConversation?: (conversation: Conversation) => void;
 }
 
 const filters = [
@@ -22,13 +24,20 @@ export default function SidebarLayout({ onSelectConversation }: SidebarLayoutPro
   );
   const [sidebarView, setSidebarView] = useState<SidebarView>("conversations");
 
-  // Mudar a logica de seleção de contato para abrir nova conversa
-  const handleSelectContact = (contactId: string) => {
-    // TODO: Criar nova conversa com esse contato
-    console.log("Novo chat com contato:", contactId);
+  const handleSelectContact = (contact: Contact) => {
+    const conversation: Conversation = {
+      id: contact.userId,
+      name: contact.nickname || contact.contactId.username,
+      avatarUrl: contact.contactId.avatar || "",
+      lastMessage: "",
+      lastMessageTimestamp: "",
+      unreadCount: 0,
+      isGroup: false,
+    };
+    
+    onSelectConversation?.(conversation);
     setSidebarView("conversations");
-  };
-
+  }; 
 
   return (
     <aside

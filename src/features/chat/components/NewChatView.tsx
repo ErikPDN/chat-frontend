@@ -5,12 +5,13 @@ import SearchBar from "../../../shared/components/SearchBar";
 import AddContactForm from "../../contact/components/AddContactForm";
 import CreateGroupForm from "../../group/components/CreateGroupForm";
 import { useContacts } from "../../contact/hooks/useContacts";
+import type { Contact } from "../../contact/types/contact.types";
 
 type SidebarView = "default" | "add-contact" | "add-group";
 
 interface NewChatViewProps {
   onBack: () => void;
-  onSelectContact: (contactId: string) => void;
+  onSelectContact: (contact: Contact) => void;
 }
 
 export default function NewChatView({
@@ -86,7 +87,7 @@ export default function NewChatView({
                     name={contact.nickname}
                     status={contact.contactId.email}
                     avatar={contact.contactId.avatar || "👤"}
-                    onClick={() => onSelectContact(contact._id)}
+                    onClick={() => onSelectContact(contact)}
                   />
                 ))}
               </div>
