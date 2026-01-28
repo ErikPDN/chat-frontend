@@ -25,5 +25,10 @@ export const conversationService = {
   getUnreadConversations: async () => {
     const response = await api.get('/chat/unread-count');
     return response.data.map(mapConversationResponse);
+  },
+
+  markAsRead: async (otherUserId: string) => {
+    const response = await api.patch(`/chat/conversations/p2p/${otherUserId}/mark-as-read`);
+    return response.data;
   }
 }

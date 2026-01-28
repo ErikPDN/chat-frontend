@@ -11,7 +11,7 @@ type SidebarView = "default" | "add-contact" | "add-group";
 
 interface NewChatViewProps {
   onBack: () => void;
-  onSelectContact: (contact: Contact) => void;
+  onSelectContact?: (contact: Contact) => void;
 }
 
 export default function NewChatView({
@@ -87,7 +87,7 @@ export default function NewChatView({
                     name={contact.nickname}
                     status={contact.contactId.email}
                     avatar={contact.contactId.avatar || "👤"}
-                    onClick={() => onSelectContact(contact)}
+                    onClick={() => onSelectContact?.(contact)}
                   />
                 ))}
               </div>

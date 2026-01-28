@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSocket } from "../../../shared/hooks/useSocket";
-import type { Message, MessageP2P, MessageP2PResponse, MessageGroup, MessageGroupResponse } from "../types/chat.types";
+import type { Message, MessageP2PResponse, MessageGroupResponse } from "../types/chat.types";
 
 interface UseMessageListenerProps {
   conversationId: string | null;
@@ -8,11 +8,10 @@ interface UseMessageListenerProps {
   onNewMessage: (message: Message) => void;
 }
 
-// Função que mapeia MessageP2PResponse (backend P2P) para MessageP2P (frontend)
 const mapP2PResponseToMessage = (
   messageData: MessageP2PResponse,
   conversationId: string
-): MessageP2P => {
+): Message => {
   return {
     id: messageData._id,
     conversationId,
@@ -25,11 +24,10 @@ const mapP2PResponseToMessage = (
   };
 };
 
-// Função que mapeia MessageGroupResponse (backend grupo) para MessageGroup (frontend)
 const mapGroupResponseToMessage = (
   messageData: MessageGroupResponse,
   conversationId: string
-): MessageGroup => {
+): Message => {
   return {
     id: messageData._id,
     conversationId: conversationId || messageData.groupId,
