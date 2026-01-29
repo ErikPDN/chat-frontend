@@ -1,5 +1,6 @@
 import { UserIcon } from "lucide-react";
 import type { Conversation } from "../types/chat.types";
+import { formatConversationTime } from "../../../shared/utils/dateFormatter";
 
 interface ConversationCardProps {
   conversation: Conversation;
@@ -12,6 +13,8 @@ export default function ConversationCard({
   isActive = false,
   onClick,
 }: ConversationCardProps) {
+  const formattedTime = formatConversationTime(conversation.lastMessageTimestamp ?? '');
+
   return (
     <button
       onClick={() => onClick?.(conversation.id)}
@@ -41,18 +44,14 @@ export default function ConversationCard({
             {conversation.name}
           </h3>
 
-          {/* TODO: converter para Date dnv e formater para string*/}
-          {conversation.unreadCount > 0 ? (
-            <span className="text-xs text-blue-400 ml-2">
-              {conversation.lastMessageTimestamp}
-            </span>
-          ) : (
-            <span className="text-xs text-zinc-400 ml-2">
-              {conversation.lastMessageTimestamp}
-            </span>
-          )}
-
+          <span className={`text-xs ml-2 ${conversation.unreadCount > 0
+            ? "text-blue-400 font-semibold"
+            : "text-zinc-400"
+            }`}>
+            {formattedTime}
+          </span>
         </div>
+
         <div className="flex justify-between items-center mt-1 gap-2">
           <p className="text-zinc-400 text-sm truncate">
             {conversation.lastMessage}
@@ -65,7 +64,6 @@ export default function ConversationCard({
               </span>
             </div>
           )}
-
         </div>
       </div>
     </button>

@@ -3,12 +3,15 @@ import SearchBar from "../shared/components/SearchBar";
 import ConversationList from "../features/chat/components/ConversationList";
 import { MessageSquarePlus } from "lucide-react";
 import NewChatView from "../features/chat/components/NewChatView";
+import type { Conversation } from "../features/chat/types/chat.types";
+import type { Contact } from "../features/contact/types/contact.types";
 
 type ConversationFilterMode = "all" | "unread";
 type SidebarView = "conversations" | "new-chat";
 
 interface SidebarLayoutProps {
-  onSelectConversation?: (conversationId: string) => void;
+  onSelectConversation?: (conversation: Conversation) => void;
+  onSelectContact?: (contact: Contact) => void;
 }
 
 const filters = [
@@ -16,19 +19,11 @@ const filters = [
   { label: "Não Lidas", mode: "unread" },
 ] as const;
 
-export default function SidebarLayout({ onSelectConversation }: SidebarLayoutProps) {
+export default function SidebarLayout({ onSelectConversation, onSelectContact }: SidebarLayoutProps) {
   const [activeFilterMode, setActiveFilterMode] = useState<ConversationFilterMode>(
     "all"
   );
   const [sidebarView, setSidebarView] = useState<SidebarView>("conversations");
-
-  // Mudar a logica de seleção de contato para abrir nova conversa
-  const handleSelectContact = (contactId: string) => {
-    // TODO: Criar nova conversa com esse contato
-    console.log("Novo chat com contato:", contactId);
-    setSidebarView("conversations");
-  };
-
 
   return (
     <aside
@@ -73,13 +68,16 @@ export default function SidebarLayout({ onSelectConversation }: SidebarLayoutPro
           </div>
 
           <div className="flex-1 overflow-y-auto mt-4 px-2">
-            <ConversationList filterMode={activeFilterMode} onSelectConversation={onSelectConversation} />
+            <ConversationList
+              filterMode={activeFilterMode}
+              onSelectConversation={onSelectConversation}
+            />
           </div>
         </>
       ) : (
         <NewChatView
           onBack={() => setSidebarView("conversations")}
-          onSelectContact={handleSelectContact}
+          onSelectContact={onSelectContact}
         />
       )}
     </aside>

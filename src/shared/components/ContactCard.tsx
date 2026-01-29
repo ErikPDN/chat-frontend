@@ -1,5 +1,5 @@
-import { Check, LucideIcon } from "lucide-react";
-import { ReactNode } from "react";
+import { Check, type LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 
 interface ContactCardProps {
   id?: string;
