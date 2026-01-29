@@ -28,9 +28,9 @@ export const messageService = {
     const endpoint = isGroup
       ? `/chat/conversations/group/${conversationId}/messages`
       : `/chat/conversations/p2p/${conversationId}/messages`;
-    
+
     const response = await api.get(endpoint);
-    
+
     if (isGroup) {
       return response.data.map((msg: MessageGroupResponse) => mapGroupResponse(msg, conversationId));
     }

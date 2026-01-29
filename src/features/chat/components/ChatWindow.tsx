@@ -5,6 +5,8 @@ import { useAuthStore } from "../../auth/stores/useAuthStore";
 import type { Conversation } from "../types/chat.types";
 import { useSocket } from "../../../shared/hooks/useSocket";
 import { useToast } from "../../../shared/hooks/useToast";
+import DateSeparator from "./DateSeparator";
+import { getDateKey, formatMessageDate } from "../../../shared/utils/dateFormatter";
 
 interface ChatWindowProps {
   conversation?: Conversation | null;
@@ -136,32 +138,40 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
           </div>
         ) : (
           <div className="flex flex-col gap-2">
-            {messages.map((message) => {
-              const isMine = message.senderId === user?.id || message.senderId === user?.id;
+            {messages.map((message, index) => {
+              const isMine = message.senderId === user?.id;
+              const currentDate = getDateKey(message.createdAt);
+              const previousDate = index > 0 ? getDateKey(messages[index - 1].createdAt) : null;
+              const showDateSeparator = currentDate !== previousDate;
+
               return (
-                <div
-                  key={message.id}
-                  className={`flex ${isMine ? "justify-end" : "justify-start"}`}
-                >
+                <div key={message.id}>
+                  {showDateSeparator && (
+                    <DateSeparator date={formatMessageDate(message.createdAt)} />
+                  )}
                   <div
-                    className={`max-w-md px-3 py-2 rounded-lg ${isMine
-                      ? "bg-blue-700 text-white"
-                      : "bg-zinc-700 text-white"
-                      }`}
+                    className={`flex ${isMine ? "justify-end" : "justify-start"}`}
                   >
-                    {!isMine && conversation.isGroup && (
-                      <p className="text-xs font-semibold text-green-400 mb-1">
-                        {message.senderName || "Desconhecido"}
-                      </p>
-                    )}
-                    <div className="flex items-end gap-2">
-                      <p className="text-sm break-words flex-1">{message.content}</p>
-                      <span className="text-xs text-zinc-300 flex-shrink-0 self-end">
-                        {new Date(message.createdAt).toLocaleTimeString('pt-BR', {
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </span>
+                    <div
+                      className={`max-w-md px-3 py-2 rounded-lg ${isMine
+                        ? "bg-blue-700 text-white"
+                        : "bg-zinc-700 text-white"
+                        }`}
+                    >
+                      {!isMine && conversation.isGroup && (
+                        <p className="text-xs font-semibold text-green-400 mb-1">
+                          {message.senderName || "Desconhecido"}
+                        </p>
+                      )}
+                      <div className="flex items-end gap-2">
+                        <p className="text-sm break-words flex-1">{message.content}</p>
+                        <span className="text-xs text-zinc-300 flex-shrink-0 self-end">
+                          {new Date(message.createdAt).toLocaleTimeString('pt-BR', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>

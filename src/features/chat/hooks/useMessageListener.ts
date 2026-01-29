@@ -60,6 +60,6 @@ export const useMessageListener = ({
       socket.off('newMessage');
       socket.off('newGroupMessage');
     };
-  }, [socket, onNewMessage]); 
+  }, [socket, onNewMessage]);
 };
 

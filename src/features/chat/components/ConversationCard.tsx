@@ -1,6 +1,6 @@
 import { UserIcon } from "lucide-react";
 import type { Conversation } from "../types/chat.types";
-import { formatConversationTime } from "../../../shared/utils/dataFormatter";
+import { formatConversationTime } from "../../../shared/utils/dateFormatter";
 
 interface ConversationCardProps {
   conversation: Conversation;
@@ -44,11 +44,10 @@ export default function ConversationCard({
             {conversation.name}
           </h3>
 
-          <span className={`text-xs ml-2 ${
-            conversation.unreadCount > 0 
-              ? "text-blue-400 font-semibold" 
-              : "text-zinc-400"
-          }`}>
+          <span className={`text-xs ml-2 ${conversation.unreadCount > 0
+            ? "text-blue-400 font-semibold"
+            : "text-zinc-400"
+            }`}>
             {formattedTime}
           </span>
         </div>
