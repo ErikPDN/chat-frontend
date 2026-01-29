@@ -45,8 +45,6 @@ export const useMessage = ({ conversationId, isGroup }: UseMessageProps) => {
   }, []);
 
   useMessageListener({
-    conversationId,
-    isGroup,
     onNewMessage: handleNewMessage,
   });
 
