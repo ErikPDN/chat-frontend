@@ -24,7 +24,6 @@ export default function SidebarLayout({ onSelectConversation, onSelectContact }:
     "all"
   );
   const [sidebarView, setSidebarView] = useState<SidebarView>("conversations");
-  
 
   return (
     <aside
@@ -69,8 +68,8 @@ export default function SidebarLayout({ onSelectConversation, onSelectContact }:
           </div>
 
           <div className="flex-1 overflow-y-auto mt-4 px-2">
-             <ConversationList 
-              filterMode={activeFilterMode} 
+            <ConversationList
+              filterMode={activeFilterMode}
               onSelectConversation={onSelectConversation}
             />
           </div>

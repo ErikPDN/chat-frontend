@@ -27,8 +27,10 @@ export default function AppLayout() {
   }
 
   const handleSelectContact = async (contact: Contact) => {
+    const otherUserId = contact.contactId._id; // TODO: ajustar essa estrutura futuramente
+
     const conversation: Conversation = {
-      id: contact._id,
+      id: otherUserId,
       name: contact.nickname || contact.contactId.username,
       avatarUrl: contact.contactId.avatar || "",
       lastMessage: "",
