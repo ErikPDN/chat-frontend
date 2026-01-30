@@ -19,7 +19,6 @@ const mapConversationResponse = (data: ConversationResponse): Conversation => ({
 export const conversationService = {
   getConversations: async () => {
     const response = await api.get('/chat/conversations');
-    console.log("Conversations response data:", response.data);
     return response.data.map(mapConversationResponse);
   },
 

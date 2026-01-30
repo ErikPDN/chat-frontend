@@ -1,6 +1,7 @@
 import { Search, MoreVertical, Send } from "lucide-react";
 import { useState } from "react";
 import { useMessage } from "../hooks/useMessage";
+import { useChatRoom } from "../hooks/useChatRoom";
 import { useAuthStore } from "../../auth/stores/useAuthStore";
 import type { Conversation } from "../types/chat.types";
 import { useSocket } from "../../../shared/hooks/useSocket";
@@ -13,7 +14,6 @@ interface ChatWindowProps {
 }
 
 export default function ChatWindow({ conversation }: ChatWindowProps) {
-  console.log("Renderizando ChatWindow para a conversa:", conversation);
   const [messageInput, setMessageInput] = useState("");
   const { user } = useAuthStore();
   const [isSending, setIsSending] = useState(false);
@@ -22,6 +22,12 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
     conversationId: conversation?.id || null,
     isGroup: conversation?.isGroup || false
   });
+  
+  useChatRoom({
+    conversationId: conversation?.id || null,
+    isGroup: conversation?.isGroup || false
+  });
+  
   const socket = useSocket();
 
   if (!conversation) {
@@ -37,6 +43,7 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
 
   const handleSend = () => {
     if (!messageInput.trim() || !conversation || !socket) return;
+    console.log("Enviando mensagem:", conversation);
 
     setIsSending(true)
     const messageContent = messageInput;
