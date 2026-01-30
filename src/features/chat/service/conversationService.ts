@@ -9,11 +9,17 @@ const mapConversationResponse = (data: ConversationResponse): Conversation => ({
   lastMessageTimestamp: data.lastMessageTimestamp || "",
   unreadCount: data.unreadCount || 0,
   isGroup: data.isGroup,
+  membersId: data.membersId ? data.membersId.map(member => ({
+    _id: member._id,
+    username: member.username || "Desconhecido",
+    avatar: member.avatar || "",
+  })) : [],
 })
 
 export const conversationService = {
   getConversations: async () => {
     const response = await api.get('/chat/conversations');
+    console.log("Conversations response data:", response.data);
     return response.data.map(mapConversationResponse);
   },
 

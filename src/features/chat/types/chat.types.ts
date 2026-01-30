@@ -8,6 +8,7 @@ export interface Conversation {
   lastMessageTimestamp?: string;
   unreadCount: number;
   isGroup: boolean;
+  membersId?: UserConversation[]
 }
 
 export interface ConversationResponse {
@@ -19,7 +20,7 @@ export interface ConversationResponse {
   unreadCount: number;
   isGroup: boolean;
   avatarUrl?: string;
-  membersId?: string[];
+  membersId?: UserConversation[];
   creatorId: string;
 }
 

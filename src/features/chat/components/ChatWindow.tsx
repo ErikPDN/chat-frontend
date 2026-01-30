@@ -13,6 +13,7 @@ interface ChatWindowProps {
 }
 
 export default function ChatWindow({ conversation }: ChatWindowProps) {
+  console.log("Renderizando ChatWindow para a conversa:", conversation);
   const [messageInput, setMessageInput] = useState("");
   const { user } = useAuthStore();
   const [isSending, setIsSending] = useState(false);
@@ -106,7 +107,13 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
           <div className="min-w-0">
             <h2 className="text-white font-medium text-base truncate">{conversation.name}</h2>
             <p className="text-xs text-zinc-400 truncate">
-              {conversation.isGroup ? "Grupo" : "Conversa direta"}
+              {conversation.isGroup ? ( 
+                conversation.membersId && conversation.membersId.length > 0 
+                  ? `${conversation.membersId.length} membros`
+                  : "Grupo"
+              ) : (
+                "Conversa direta"
+              )}
             </p>
           </div>
         </div>
