@@ -1,7 +1,6 @@
 import { Search, MoreVertical, Send } from "lucide-react";
 import { useState } from "react";
 import { useMessage } from "../hooks/useMessage";
-import { useChatRoom } from "../hooks/useChatRoom";
 import { useAuthStore } from "../../auth/stores/useAuthStore";
 import type { Conversation } from "../types/chat.types";
 import { useSocket } from "../../../shared/hooks/useSocket";
@@ -19,11 +18,6 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
   const [isSending, setIsSending] = useState(false);
   const { addToast } = useToast();
   const { messages, isLoading, addMessage } = useMessage({
-    conversationId: conversation?.id || null,
-    isGroup: conversation?.isGroup || false
-  });
-  
-  useChatRoom({
     conversationId: conversation?.id || null,
     isGroup: conversation?.isGroup || false
   });

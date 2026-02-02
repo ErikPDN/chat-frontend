@@ -7,15 +7,20 @@ import { useConversationStore } from "../features/chat/stores/useConversationSto
 import { useToast } from "../shared/hooks/useToast";
 import { conversationService } from "../features/chat/service/conversationService";
 import type { Contact } from "../features/contact/types/contact.types";
+import { useConversationListener } from "../features/chat/hooks/useConversationListener";
 
 export default function AppLayout() {
   const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
   const { addConversation, updateConversation, hasUnreadConversations } = useConversationStore();
   const { addToast } = useToast();
+  useConversationListener();
 
   const handleSelectConversation = async (conversation: Conversation) => {
     try {
-      if (hasUnreadConversations(conversation.id)) {
+      if (conversation.isGroup && hasUnreadConversations(conversation.id)) {
+        await conversationService.markGroupAsRead(conversation.id);
+        updateConversation(conversation.id, { unreadCount: 0 });
+      } else if (hasUnreadConversations(conversation.id)) {
         await conversationService.markAsRead(conversation.id);
         updateConversation(conversation.id, { unreadCount: 0 });
       }
@@ -27,8 +32,7 @@ export default function AppLayout() {
   }
 
   const handleSelectContact = async (contact: Contact) => {
-    const otherUserId = contact.contactId._id; // TODO: ajustar essa estrutura futuramente
-
+    const otherUserId = contact.contactId._id;
     const conversation: Conversation = {
       id: otherUserId,
       name: contact.nickname || contact.contactId.username,

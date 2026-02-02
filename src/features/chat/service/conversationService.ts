@@ -35,5 +35,10 @@ export const conversationService = {
   markAsRead: async (otherUserId: string) => {
     const response = await api.patch(`/chat/conversations/p2p/${otherUserId}/mark-as-read`);
     return response.data;
+  },
+
+  markGroupAsRead: async (groupId: string) => {
+    const response = await api.patch(`/chat/conversations/group/${groupId}/mark-as-read`);
+    return response.data;
   }
 }

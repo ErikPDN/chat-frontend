@@ -1,36 +1,42 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '../../features/auth/stores/useAuthStore';
 
+let socketInstance: Socket | null = null;
+
 export const useSocket = () => {
-  const socketRef = useRef<Socket | null>(null);
   const { user, token } = useAuthStore();
+  const [, setVersion] = useState(0);
 
   useEffect(() => {
-    if (!user?.id || !token) return;
+    if (!user?.id || !token) {
+      if (socketInstance) {
+        socketInstance.disconnect();
+        socketInstance = null;
+      }
+      return;
+    }
 
-    socketRef.current = io('http://localhost:3000/chat', {
-      auth: {
-        token: token,
-      },
-      reconnection: true,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      reconnectionAttempts: 5,
-    });
+    if (!socketInstance) {
+      socketInstance = io('http://localhost:3000/chat', {
+        auth: { token },
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 5,
+      });
 
-    socketRef.current.on('connect', () => {
-      console.log('WebSocket conectado');
-    });
+      socketInstance.on('connect', () => {
+        console.log('WebSocket conectado');
+        setVersion((v) => v + 1);
+      });
 
-    socketRef.current.on('disconnect', () => {
-      console.log('WebSocket desconectado');
-    });
-
-    return () => {
-      socketRef.current?.disconnect();
-    };
+      socketInstance.on('disconnect', () => {
+        console.log('WebSocket desconectado');
+        setVersion((v) => v + 1);
+      });
+    }
   }, [user?.id, token]);
 
-  return socketRef.current;
+  return socketInstance;
 };

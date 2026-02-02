@@ -28,8 +28,8 @@ export type ConversationFilterMode = 'all' | 'unread';
 
 export interface MessageP2PResponse {
   _id: string;
-  senderId: UserConversation;
-  receiverId: UserConversation;
+  senderId: UserConversation | string;
+  receiverId: UserConversation | string;
   content: string;
   isRead: boolean;
   createdAt: string;
@@ -39,7 +39,7 @@ export interface MessageP2PResponse {
 export interface MessageGroupResponse {
   _id: string;
   groupId: string;
-  senderId: UserConversation;
+  senderId: UserConversation | string;
   content: string;
   isRead: boolean;
   createdAt: string;
