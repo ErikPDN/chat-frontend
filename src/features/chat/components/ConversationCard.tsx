@@ -30,10 +30,10 @@ export default function ConversationCard({
         <img
           src={conversation.avatarUrl}
           alt={conversation.name}
-          className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+          className="w-12 h-12 rounded-full object-cover shrink-0"
         />
       ) : (
-        <div className="w-12 h-12 rounded-full bg-zinc-700 flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 rounded-full bg-zinc-700 flex items-center justify-center shrink-0">
           <UserIcon className="w-6 h-6 text-zinc-400" />
         </div>
       )}
@@ -58,7 +58,7 @@ export default function ConversationCard({
           </p>
 
           {conversation.unreadCount > 0 && (
-            <div className="flex-shrink-0 flex items-center">
+            <div className="shrink-0 flex items-center">
               <span className="bg-blue-500 text-xs rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center text-center">
                 {conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}
               </span>

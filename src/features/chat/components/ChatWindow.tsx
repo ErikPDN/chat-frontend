@@ -21,6 +21,7 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
     conversationId: conversation?.id || null,
     isGroup: conversation?.isGroup || false
   });
+  
   const socket = useSocket();
 
   if (!conversation) {
@@ -36,6 +37,7 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
 
   const handleSend = () => {
     if (!messageInput.trim() || !conversation || !socket) return;
+    console.log("Enviando mensagem:", conversation);
 
     setIsSending(true)
     const messageContent = messageInput;
@@ -106,7 +108,13 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
           <div className="min-w-0">
             <h2 className="text-white font-medium text-base truncate">{conversation.name}</h2>
             <p className="text-xs text-zinc-400 truncate">
-              {conversation.isGroup ? "Grupo" : "Conversa direta"}
+              {conversation.isGroup ? ( 
+                conversation.membersId && conversation.membersId.length > 0 
+                  ? `${conversation.membersId.length} membros`
+                  : "Grupo"
+              ) : (
+                "Conversa direta"
+              )}
             </p>
           </div>
         </div>

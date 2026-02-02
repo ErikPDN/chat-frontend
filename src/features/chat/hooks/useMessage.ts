@@ -11,7 +11,8 @@ interface UseMessageProps {
 
 export const useMessage = ({ conversationId, isGroup }: UseMessageProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false); const { addToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const { addToast } = useToast();
 
   const fetchMessages = useCallback(async () => {
     if (!conversationId) {

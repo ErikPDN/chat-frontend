@@ -9,6 +9,11 @@ const mapConversationResponse = (data: ConversationResponse): Conversation => ({
   lastMessageTimestamp: data.lastMessageTimestamp || "",
   unreadCount: data.unreadCount || 0,
   isGroup: data.isGroup,
+  membersId: data.membersId ? data.membersId.map(member => ({
+    _id: member._id,
+    username: member.username || "Desconhecido",
+    avatar: member.avatar || "",
+  })) : [],
 })
 
 export const conversationService = {
@@ -29,6 +34,11 @@ export const conversationService = {
 
   markAsRead: async (otherUserId: string) => {
     const response = await api.patch(`/chat/conversations/p2p/${otherUserId}/mark-as-read`);
+    return response.data;
+  },
+
+  markGroupAsRead: async (groupId: string) => {
+    const response = await api.patch(`/chat/conversations/group/${groupId}/mark-as-read`);
     return response.data;
   }
 }
