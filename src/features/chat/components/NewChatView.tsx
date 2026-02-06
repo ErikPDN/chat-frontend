@@ -1,13 +1,13 @@
-import { ArrowLeft, UserPlus, Users } from "lucide-react";
-import { useState, useMemo } from "react";
-import ContactCard from "../../../shared/components/ContactCard";
-import SearchBar from "../../../shared/components/SearchBar";
-import AddContactForm from "../../contact/components/AddContactForm";
-import CreateGroupForm from "../../group/components/CreateGroupForm";
-import { useContacts } from "../../contact/hooks/useContacts";
-import type { Contact } from "../../contact/types/contact.types";
+import { ArrowLeft, UserPlus, Users } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import ContactCard from '../../../shared/components/ContactCard';
+import SearchBar from '../../../shared/components/SearchBar';
+import AddContactForm from '../../contact/components/AddContactForm';
+import CreateGroupForm from '../../group/components/CreateGroupForm';
+import { useContacts } from '../../contact/hooks/useContacts';
+import type { Contact } from '../../contact/types/contact.types';
 
-type SidebarView = "default" | "add-contact" | "add-group";
+type SidebarView = 'default' | 'add-contact' | 'add-group';
 
 interface NewChatViewProps {
   onBack: () => void;
@@ -18,21 +18,25 @@ export default function NewChatView({
   onBack,
   onSelectContact,
 }: NewChatViewProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [view, setView] = useState<SidebarView>("default");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [view, setView] = useState<SidebarView>('default');
   const { contacts, isLoading } = useContacts();
 
   const filteredContacts = useMemo(() => {
-    return contacts.filter(contact =>
-      contact.nickname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.contactId.username.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    return contacts
+      .filter(
+        (contact) =>
+          contact.nickname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          contact.contactId.username
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()),
+      )
       .sort((a, b) => a.nickname.localeCompare(b.nickname));
   }, [contacts, searchTerm]);
 
   return (
     <>
-      {view === "default" && (
+      {view === 'default' && (
         <div className="flex flex-col h-full">
           <div className="h-16 flex items-center px-6">
             <button
@@ -43,7 +47,9 @@ export default function NewChatView({
               <ArrowLeft size={20} />
             </button>
             <div className="flex-1 justify-center flex">
-              <h1 className="text-lg text-white font-semibold">Nova Conversa</h1>
+              <h1 className="text-lg text-white font-semibold">
+                Nova Conversa
+              </h1>
             </div>
           </div>
 
@@ -59,14 +65,14 @@ export default function NewChatView({
               icon={UserPlus}
               iconColor="blue"
               isAction
-              onClick={() => setView("add-contact")}
+              onClick={() => setView('add-contact')}
             />
             <ContactCard
               name="Novo grupo"
               icon={Users}
               iconColor="blue"
               isAction
-              onClick={() => setView("add-group")}
+              onClick={() => setView('add-group')}
             />
           </div>
 
@@ -86,7 +92,7 @@ export default function NewChatView({
                     id={contact._id}
                     name={contact.nickname}
                     status={contact.contactId.email}
-                    avatar={contact.contactId.avatar || "👤"}
+                    avatar={contact.contactId.avatar || '👤'}
                     onClick={() => onSelectContact?.(contact)}
                   />
                 ))}
@@ -100,16 +106,12 @@ export default function NewChatView({
         </div>
       )}
 
-      {view === "add-contact" && (
-        <AddContactForm
-          onBack={() => setView("default")}
-        />
+      {view === 'add-contact' && (
+        <AddContactForm onBack={() => setView('default')} />
       )}
 
-      {view === "add-group" && (
-        <CreateGroupForm
-          onBack={() => setView("default")}
-        />
+      {view === 'add-group' && (
+        <CreateGroupForm onBack={() => setView('default')} />
       )}
     </>
   );
