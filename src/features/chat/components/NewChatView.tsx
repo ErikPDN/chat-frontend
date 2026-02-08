@@ -1,11 +1,13 @@
 import { ArrowLeft, UserPlus, Users } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import ContactCard from '../../../shared/components/ContactCard';
 import SearchBar from '../../../shared/components/SearchBar';
 import AddContactForm from '../../contact/components/AddContactForm';
 import CreateGroupForm from '../../group/components/CreateGroupForm';
 import { useContacts } from '../../contact/hooks/useContacts';
+import { useFilteredContacts } from '../../../shared/hooks/useFilteredContacts';
 import type { Contact } from '../../contact/types/contact.types';
+import LoadingSpinner from '../../../shared/components/LoadingSpinner';
 
 type SidebarView = 'default' | 'add-contact' | 'add-group';
 
@@ -22,17 +24,7 @@ export default function NewChatView({
   const [view, setView] = useState<SidebarView>('default');
   const { contacts, isLoading } = useContacts();
 
-  const filteredContacts = useMemo(() => {
-    return contacts
-      .filter(
-        (contact) =>
-          contact.nickname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          contact.contactId.username
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()),
-      )
-      .sort((a, b) => a.nickname.localeCompare(b.nickname));
-  }, [contacts, searchTerm]);
+  const filteredContacts = useFilteredContacts({ searchTerm, contacts });
 
   return (
     <>
@@ -78,9 +70,7 @@ export default function NewChatView({
 
           <div className="flex-1 overflow-y-auto px-2">
             {isLoading ? (
-              <div className="flex items-center justify-center h-full text-zinc-400">
-                <p>Carregando contatos...</p>
-              </div>
+              <LoadingSpinner size="md" />
             ) : filteredContacts.length > 0 ? (
               <div>
                 <p className="text-zinc-400 text-xs font-semibold px-4 py-3 uppercase">
