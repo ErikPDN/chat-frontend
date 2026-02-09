@@ -6,7 +6,8 @@ import Input from '../../../shared/components/Input';
 import Button from '../../../shared/components/Button';
 
 export default function RegisterForm() {
-  const { formData, errors, isLoading, handleSubmit, handleChange } = useRegister();
+  const { formData, errors, isLoading, handleSubmit, handleChange } =
+    useRegister();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -80,21 +81,30 @@ export default function RegisterForm() {
               type="button"
               onClick={() => setShowConfirmPassword((s) => !s)}
               className="text-zinc-300 hover:text-white"
-              aria-label={showConfirmPassword ? 'Ocultar senha' : 'Mostrar senha'}
+              aria-label={
+                showConfirmPassword ? 'Ocultar senha' : 'Mostrar senha'
+              }
             >
-              {showConfirmPassword ? <EyeOff size={20} /> : <EyeIcon size={20} />}
+              {showConfirmPassword ? (
+                <EyeOff size={20} />
+              ) : (
+                <EyeIcon size={20} />
+              )}
             </button>
           }
         />
 
-        <Button type="submit" isLoading={isLoading}>
+        <Button type="submit" isLoading={isLoading} className="w-full">
           Registrar
         </Button>
 
         <div className="text-center">
           <p className="text-zinc-400 text-sm">
             Já tem uma conta?{' '}
-            <Link to="/login" className="text-blue-500 hover:underline font-medium">
+            <Link
+              to="/login"
+              className="text-blue-500 hover:underline font-medium"
+            >
               Entrar
             </Link>
           </p>

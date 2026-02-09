@@ -7,17 +7,27 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   trailingIcon?: ReactNode;
 };
 
-export default function Input({ label, className, id, error, trailingIcon, ...rest }: InputProps) {
+export default function Input({
+  label,
+  className,
+  id,
+  error,
+  trailingIcon,
+  ...rest
+}: InputProps) {
   const inputClasses = clsx(
     'w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all',
     error && 'border-red-500 focus:ring-red-500',
-    trailingIcon && 'pr-10'
+    trailingIcon && 'pr-10',
   );
 
   return (
     <div>
       {label && (
-        <label htmlFor={id} className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+        <label
+          htmlFor={id}
+          className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2"
+        >
           {label}
         </label>
       )}
@@ -30,13 +40,16 @@ export default function Input({ label, className, id, error, trailingIcon, ...re
           {...rest}
         />
         {trailingIcon && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 top-7">
+          <div className="absolute right-3 top-1/2 -translate-y-1/2">
             {trailingIcon}
           </div>
         )}
       </div>
       {error && (
-        <p id={`${id}-error`} className="text-red-400 text-sm mt-1">
+        <p
+          id={`${id}-error`}
+          className="text-red-400 text-sm mt-1 flex justify-end items-center gap-1"
+        >
           {error}
         </p>
       )}

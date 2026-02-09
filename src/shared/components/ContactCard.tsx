@@ -34,7 +34,7 @@ export default function ContactCard({
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-zinc-800 transition-colors text-left group"
+      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-zinc-800 transition-colors text-left group cursor-pointer"
     >
       <div
         className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${

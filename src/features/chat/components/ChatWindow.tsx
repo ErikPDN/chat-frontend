@@ -137,7 +137,7 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
         <>
           <header
             onClick={handleGroupSettings}
-            className="h-16 bg-zinc-800 border-b border-zinc-700 flex items-center justify-between px-4 shrink-0"
+            className="h-16 bg-zinc-800 border-b border-zinc-700 flex items-center justify-between px-4 shrink-0 cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-zinc-600 flex items-center justify-center shrink-0">

@@ -1,4 +1,4 @@
-import type { User } from "../../user/types/user.types";
+import type { User } from '../../user/types/user.types';
 
 export interface Group {
   _id: string;
@@ -17,3 +17,7 @@ export interface CreateGroupRequest {
   membersId: string[];
 }
 
+export interface UpdateGroupRequest {
+  name?: string;
+  description?: string;
+}

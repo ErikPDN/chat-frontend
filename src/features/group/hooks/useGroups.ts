@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import { useToast } from "../../../shared/hooks/useToast";
-import type { Group } from "../types/group.types";
-import { groupService } from "../service/groupService";
+import { useEffect } from 'react';
+import { useToast } from '../../../shared/hooks/useToast';
+import { groupService } from '../service/groupService';
+import { useGroupStore } from '../stores/useGroupStore';
 
 export const useGroups = () => {
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { groups, isLoading, setGroups, setIsLoading } = useGroupStore();
   const { addToast } = useToast();
 
   useEffect(() => {
@@ -24,7 +23,7 @@ export const useGroups = () => {
     };
 
     fetchGroups();
-  }, [addToast]);
+  }, [addToast, setGroups, setIsLoading]);
 
   return { groups, isLoading };
 };

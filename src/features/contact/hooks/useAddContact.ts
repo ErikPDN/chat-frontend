@@ -1,7 +1,7 @@
-import { useState } from "react";
-import type { AddContactRequest, Contact } from "../types/contact.types"
-import { useToast } from "../../../shared/hooks/useToast";
-import { contactService } from "../service/contactService";
+import { useState } from 'react';
+import type { AddContactRequest, Contact } from '../types/contact.types';
+import { useToast } from '../../../shared/hooks/useToast';
+import { contactService } from '../service/contactService';
 
 interface AddContactErrors {
   userId?: string;
@@ -12,19 +12,21 @@ export const useAddContact = () => {
   const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<AddContactRequest>({
-    userId: "",
-    nickname: "",
-  })
+    userId: '',
+    nickname: '',
+  });
   const [errors, setErrors] = useState<AddContactErrors>({});
 
   const validateForm = (): boolean => {
     const newErrors: AddContactErrors = {};
 
     if (!formData.userId.trim()) {
-      newErrors.userId = "ID do usuário é obrigatório";
+      newErrors.userId = 'ID do usuário é obrigatório';
     }
-    if (!formData.nickname.trim()) { newErrors.nickname = "Apelido é obrigatório"; } else if (formData.nickname.length < 2) {
-      newErrors.nickname = "Apelido deve ter ao menos 2 caracteres";
+    if (!formData.nickname.trim()) {
+      newErrors.nickname = 'Apelido é obrigatório';
+    } else if (formData.nickname.length < 2) {
+      newErrors.nickname = 'Apelido deve ter ao menos 2 caracteres';
     }
 
     if (Object.keys(newErrors).length) {
@@ -34,7 +36,7 @@ export const useAddContact = () => {
 
     setErrors({});
     return true;
-  }
+  };
 
   const addContact = async (): Promise<Contact | null> => {
     if (!validateForm()) return null;
@@ -42,19 +44,23 @@ export const useAddContact = () => {
     setIsLoading(true);
 
     try {
-      const contact = await contactService.addContact(formData.userId, formData.nickname);
+      const contact = await contactService.addContact(
+        formData.userId,
+        formData.nickname,
+      );
       addToast('Contato adicionado com sucesso!', 'success');
-      setFormData({ userId: "", nickname: "" });
+      setFormData({ userId: '', nickname: '' });
 
       return contact;
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Erro ao adicionar contato';
+      const errorMessage =
+        error.response?.data?.message || 'Erro ao adicionar contato';
       addToast(errorMessage, 'error');
       return null;
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   const setField = (name: keyof AddContactRequest, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -76,5 +82,4 @@ export const useAddContact = () => {
     handleChange,
     setField,
   };
-
-}
+};

@@ -6,13 +6,14 @@ import Input from '../../../shared/components/Input';
 import Button from '../../../shared/components/Button';
 
 export default function LoginForm() {
-  const { formData, errors, isLoading, handleSubmit, handleChange } = useLogin();
+  const { formData, errors, isLoading, handleSubmit, handleChange } =
+    useLogin();
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>
-      <div className='text-center mb-6'>
-        <h2 className='text-2xl font-bold'>Faça Login</h2>
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold">Faça Login</h2>
         <p className="text-zinc-400 test-sm mt-2">Junte-se ao Signal Clone</p>
       </div>
 
@@ -73,14 +74,17 @@ export default function LoginForm() {
           </Link>
         </div>
 
-        <Button type="submit" isLoading={isLoading}>
+        <Button type="submit" isLoading={isLoading} className="w-full">
           Entrar
         </Button>
 
         <div className="text-center">
           <p className="text-zinc-400 text-sm">
             Não tem uma conta?{' '}
-            <Link to="/register" className="text-blue-500 hover:underline font-medium">
+            <Link
+              to="/register"
+              className="text-blue-500 hover:underline font-medium"
+            >
               Criar conta
             </Link>
           </p>

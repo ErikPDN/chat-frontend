@@ -1,12 +1,12 @@
-import type { ButtonHTMLAttributes } from 'react';
 import clsx from 'clsx';
+import type { ButtonHTMLAttributes } from 'react';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary';
   isLoading?: boolean;
 };
 
-export default function Button({
+export default function ModalButton({
   variant = 'primary',
   isLoading,
   disabled,
@@ -15,7 +15,7 @@ export default function Button({
   ...rest
 }: ButtonProps) {
   const base =
-    'font-bold py-3 rounded-lg w-24 flex justify-center items-center transition-all cursor-pointer';
+    'font-bold py-3 rounded-lg w-full flex justify-center items-center transition-all cursor-pointer';
 
   const variants: Record<string, string> = {
     primary:

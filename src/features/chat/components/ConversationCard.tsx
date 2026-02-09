@@ -1,6 +1,6 @@
-import { UserIcon } from "lucide-react";
-import type { Conversation } from "../types/chat.types";
-import { formatConversationTime } from "../../../shared/utils/dateFormatter";
+import { UserIcon } from 'lucide-react';
+import type { Conversation } from '../types/chat.types';
+import { formatConversationTime } from '../../../shared/utils/dateFormatter';
 
 interface ConversationCardProps {
   conversation: Conversation;
@@ -13,7 +13,9 @@ export default function ConversationCard({
   isActive = false,
   onClick,
 }: ConversationCardProps) {
-  const formattedTime = formatConversationTime(conversation.lastMessageTimestamp ?? '');
+  const formattedTime = formatConversationTime(
+    conversation.lastMessageTimestamp ?? '',
+  );
 
   return (
     <button
@@ -21,10 +23,7 @@ export default function ConversationCard({
       type="button"
       aria-pressed={isActive}
       className={`w-full px-3 py-3 flex gap-3 rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900
-        ${isActive
-          ? "bg-zinc-700/50"
-          : "hover:bg-zinc-800/50"
-        }`}
+        ${isActive ? 'bg-zinc-700/50' : 'hover:bg-zinc-800/50'} cursor-pointer`}
     >
       {conversation.avatarUrl ? (
         <img
@@ -44,10 +43,13 @@ export default function ConversationCard({
             {conversation.name}
           </h3>
 
-          <span className={`text-xs ml-2 ${conversation.unreadCount > 0
-            ? "text-blue-400 font-semibold"
-            : "text-zinc-400"
-            }`}>
+          <span
+            className={`text-xs ml-2 ${
+              conversation.unreadCount > 0
+                ? 'text-blue-400 font-semibold'
+                : 'text-zinc-400'
+            }`}
+          >
             {formattedTime}
           </span>
         </div>
@@ -60,12 +62,14 @@ export default function ConversationCard({
           {conversation.unreadCount > 0 && (
             <div className="shrink-0 flex items-center">
               <span className="bg-blue-500 text-xs rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center text-center">
-                {conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}
+                {conversation.unreadCount > 99
+                  ? '99+'
+                  : conversation.unreadCount}
               </span>
             </div>
           )}
         </div>
       </div>
     </button>
-  )
+  );
 }

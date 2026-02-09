@@ -14,6 +14,7 @@ import { useState } from 'react';
 import LoadingSpinner from '../../../shared/components/LoadingSpinner';
 import IconCard from '../../../shared/components/IconCard';
 import type { Contact } from '../../contact/types/contact.types';
+import EditGroupModal from '../../group/components/EditGroupModal';
 
 interface ChatGroupSettingsUIProps {
   onBack: () => void;
@@ -26,11 +27,8 @@ export default function ChatGroupSettingsUI({
 }: ChatGroupSettingsUIProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const { contacts, isLoading } = useContacts();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const filteredContacts = useFilteredContacts({ searchTerm, contacts });
-
-  const handleEditGroup = () => {
-    // TODO: Implementar lógica para editar nome e descrição do grupo
-  };
 
   return (
     <div className="flex flex-col h-full overflow-y-auto px-2">
@@ -54,7 +52,7 @@ export default function ChatGroupSettingsUI({
 
             <button
               className="absolute left-48 text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700/50 cursor-pointer"
-              onClick={handleEditGroup}
+              onClick={() => setIsModalOpen(true)}
             >
               <Pencil size={20} />
             </button>
@@ -123,6 +121,8 @@ export default function ChatGroupSettingsUI({
           </div>
         </div>
       </div>
+
+      {isModalOpen && <EditGroupModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 }
