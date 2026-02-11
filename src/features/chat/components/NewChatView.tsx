@@ -1,4 +1,4 @@
-import { ArrowLeft, UserPlus, Users } from 'lucide-react';
+import { ArrowLeft, User, UserPlus, Users } from 'lucide-react';
 import { useState } from 'react';
 import ContactCard from '../../../shared/components/ContactCard';
 import SearchBar from '../../../shared/components/SearchBar';
@@ -30,10 +30,10 @@ export default function NewChatView({
     <>
       {view === 'default' && (
         <div className="flex flex-col h-full">
-          <div className="h-16 flex items-center px-6">
+          <div className="h-16 flex items-center px-6 relative">
             <button
               onClick={onBack}
-              className="text-white hover:text-blue-400 transition-colors mr-4"
+              className="absolute left-3 text-zinc-400 hover:text-white transition-colors rounded-full p-2 hover:bg-zinc-700/50 cursor-pointer"
               aria-label="Voltar"
             >
               <ArrowLeft size={20} />
@@ -82,7 +82,11 @@ export default function NewChatView({
                     id={contact._id}
                     name={contact.nickname}
                     status={contact.contactId.email}
-                    avatar={contact.contactId.avatar || '👤'}
+                    avatar={
+                      contact.contactId.avatar || (
+                        <User className="text-blue-600" />
+                      )
+                    }
                     onClick={() => onSelectContact?.(contact)}
                   />
                 ))}

@@ -43,8 +43,8 @@ export default function ChatGroupSettingsUI({
 
       <div className="mx-10">
         <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="w-24 h-24 rounded-full bg-zinc-700 flex items-center justify-center">
-            <User size={48} className="text-zinc-400" />
+          <div className="w-24 h-24 rounded-full bg-blue-200 flex items-center justify-center">
+            <User size={48} className="text-blue-600" />
           </div>
 
           <div className="flex items-center space-x-1.5 relative">
@@ -83,7 +83,11 @@ export default function ChatGroupSettingsUI({
                     id={contact._id}
                     name={contact.nickname}
                     status={contact.contactId.email}
-                    avatar={contact.contactId.avatar || '👤'}
+                    avatar={
+                      contact.contactId.avatar || (
+                        <User className="text-blue-600" />
+                      )
+                    }
                     onClick={() => onSelectContact?.(contact)}
                   />
                 ))}

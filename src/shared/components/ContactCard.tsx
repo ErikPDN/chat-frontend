@@ -38,9 +38,7 @@ export default function ContactCard({
     >
       <div
         className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-          isAction
-            ? iconColorMap[iconColor]
-            : 'bg-zinc-700 group-hover:bg-zinc-600'
+          isAction ? iconColorMap[iconColor] : 'bg-blue-200'
         }`}
       >
         {Icon ? <Icon size={20} /> : avatar}

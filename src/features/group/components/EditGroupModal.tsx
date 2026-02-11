@@ -1,6 +1,6 @@
 import { Camera, User, X } from 'lucide-react';
 import { useUpdateGroup } from '../hooks/useUpdateGroup';
-import type { FormEvent } from 'react';
+import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import Input from '../../../shared/components/Input';
 import Button from '../../../shared/components/Button';
 
@@ -11,10 +11,23 @@ interface EditGroupModalProps {
 export default function EditGroupModal({ onClose }: EditGroupModalProps) {
   const { update, isLoading, formData, errors, handleChange } =
     useUpdateGroup();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [groupImage, setGroupImage] = useState<string | null>(null);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     update('groupId', formData); // Replace 'groupId' with the actual group ID
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setGroupImage(event.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -31,21 +44,39 @@ export default function EditGroupModal({ onClose }: EditGroupModalProps) {
           </button>
         </div>
 
-        <div className="w-30 h-30 rounded-full bg-blue-200 flex items-center justify-center self-center relative">
-          <User size={48} className="text-blue-600" />
+        <div
+          onClick={() => fileInputRef.current?.click()}
+          className="w-30 h-30 rounded-full bg-blue-200 flex items-center justify-center self-center relative"
+        >
+          {groupImage ? (
+            <img
+              src={groupImage}
+              alt="Grupo"
+              className="w-full h-full rounded-full object-cover"
+            />
+          ) : (
+            <User size={48} className="text-blue-600" />
+          )}
 
           <button
-            onClick={() => console.log('Change avatar')} // TODO: Implement change avatar functionality
+            onClick={() => fileInputRef.current?.click()}
             className="bg-white absolute bottom-0 right-0 rounded-full p-2 cursor-pointer"
           >
             <Camera size={20} />
           </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col p-3 gap-4">
           <Input
-            id="groupName"
-            name="groupName"
+            id="name"
+            name="name"
             type="text"
             placeholder="Digite o nome do grupo"
             value={formData.name}
@@ -57,8 +88,8 @@ export default function EditGroupModal({ onClose }: EditGroupModalProps) {
           />
 
           <Input
-            id="groupDescription"
-            name="groupDescription"
+            id="description"
+            name="description"
             type="text"
             placeholder="Digite a descrição do grupo"
             value={formData.description}
@@ -85,7 +116,7 @@ export default function EditGroupModal({ onClose }: EditGroupModalProps) {
             </Button>
 
             <Button type="submit" isLoading={isLoading} className="w-24">
-              Adicionar
+              Salvar
             </Button>
           </div>
         </form>

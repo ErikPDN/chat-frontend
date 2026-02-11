@@ -27,6 +27,7 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
     conversationId: conversation?.id || null,
     isGroup: conversation?.isGroup || false,
   });
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [chatWindowView, setChatWindowView] =
     useState<ChatWindowView>('messages');
@@ -131,6 +132,8 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
     }
   };
 
+  const handleSearch = () => {};
+
   return (
     <div className="flex-1 flex flex-col bg-zinc-900">
       {chatWindowView === 'messages' && (
@@ -140,11 +143,20 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
             className="h-16 bg-zinc-800 border-b border-zinc-700 flex items-center justify-between px-4 shrink-0 cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-zinc-600 flex items-center justify-center shrink-0">
-                <span className="text-white font-medium text-sm">
-                  {conversation.name.substring(0, 2).toUpperCase()}
-                </span>
-              </div>
+              {conversation.avatarUrl ? (
+                <img
+                  src={conversation.avatarUrl}
+                  alt={conversation.name}
+                  className="w-10 h-10 rounded-full"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center shrink-0">
+                  <span className="text-blue-600 font-medium text-sm">
+                    {conversation.name.substring(0, 2).toUpperCase()}
+                  </span>
+                </div>
+              )}
+
               <div className="min-w-0">
                 <h2 className="text-white font-medium text-base truncate">
                   {conversation.name}
@@ -164,6 +176,7 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
               <button
                 className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700/50"
                 title="Pesquisar"
+                onClick={handleSearch}
               >
                 <Search size={20} />
               </button>

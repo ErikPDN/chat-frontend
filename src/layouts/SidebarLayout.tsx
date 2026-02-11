@@ -1,13 +1,13 @@
-import { useState } from "react";
-import SearchBar from "../shared/components/SearchBar";
-import ConversationList from "../features/chat/components/ConversationList";
-import { MessageSquarePlus } from "lucide-react";
-import NewChatView from "../features/chat/components/NewChatView";
-import type { Conversation } from "../features/chat/types/chat.types";
-import type { Contact } from "../features/contact/types/contact.types";
+import { useState } from 'react';
+import SearchBar from '../shared/components/SearchBar';
+import ConversationList from '../features/chat/components/ConversationList';
+import { MessageSquarePlus } from 'lucide-react';
+import NewChatView from '../features/chat/components/NewChatView';
+import type { Conversation } from '../features/chat/types/chat.types';
+import type { Contact } from '../features/contact/types/contact.types';
 
-type ConversationFilterMode = "all" | "unread";
-type SidebarView = "conversations" | "new-chat";
+type ConversationFilterMode = 'all' | 'unread';
+type SidebarView = 'conversations' | 'new-chat';
 
 interface SidebarLayoutProps {
   onSelectConversation?: (conversation: Conversation) => void;
@@ -15,15 +15,17 @@ interface SidebarLayoutProps {
 }
 
 const filters = [
-  { label: "Tudo", mode: "all" },
-  { label: "Não Lidas", mode: "unread" },
+  { label: 'Tudo', mode: 'all' },
+  { label: 'Não Lidas', mode: 'unread' },
 ] as const;
 
-export default function SidebarLayout({ onSelectConversation, onSelectContact }: SidebarLayoutProps) {
-  const [activeFilterMode, setActiveFilterMode] = useState<ConversationFilterMode>(
-    "all"
-  );
-  const [sidebarView, setSidebarView] = useState<SidebarView>("conversations");
+export default function SidebarLayout({
+  onSelectConversation,
+  onSelectContact,
+}: SidebarLayoutProps) {
+  const [activeFilterMode, setActiveFilterMode] =
+    useState<ConversationFilterMode>('all');
+  const [sidebarView, setSidebarView] = useState<SidebarView>('conversations');
 
   return (
     <aside
@@ -32,16 +34,17 @@ export default function SidebarLayout({ onSelectConversation, onSelectContact }:
       w-80 md:w-86 lg:w-96 xl:w-120
       border-r border-zinc-700 flex-shrink-0"
     >
-      {sidebarView === "conversations" ? (
+      {sidebarView === 'conversations' ? (
         <>
           <div className="h-16 flex items-center px-6">
             <h1 className="text-2xl text-white font-bold">ChatApp</h1>
 
-            <MessageSquarePlus
-              onClick={() => setSidebarView("new-chat")}
-              size={20}
-              className="text-white ml-auto cursor-pointer hover:text-blue-400 transition-colors"
-            />
+            <button
+              className="text-zinc-400 ml-auto hover:text-white transition-colors rounded-full p-2 hover:bg-zinc-700/50 cursor-pointer"
+              onClick={() => setSidebarView('new-chat')}
+            >
+              <MessageSquarePlus size={20} />
+            </button>
           </div>
 
           <div className="px-2">
@@ -54,9 +57,10 @@ export default function SidebarLayout({ onSelectConversation, onSelectContact }:
                     key={filter.mode}
                     onClick={() => setActiveFilterMode(filter.mode)}
                     className={`px-3 py-1 text-sm rounded-full transition-all duration-150 border 
-                      ${activeFilterMode === filter.mode
-                        ? "bg-blue-600/25 text-blue-400 border-blue-500/40"
-                        : "text-zinc-400 hover:bg-zinc-700/50 hover:text-white border-zinc-800"
+                      ${
+                        activeFilterMode === filter.mode
+                          ? 'bg-blue-600/25 text-blue-400 border-blue-500/40'
+                          : 'text-zinc-400 hover:bg-zinc-700/50 hover:text-white border-zinc-800'
                       } focus:outline-none focus:ring-0`}
                     aria-pressed={activeFilterMode === filter.mode}
                   >
@@ -76,10 +80,10 @@ export default function SidebarLayout({ onSelectConversation, onSelectContact }:
         </>
       ) : (
         <NewChatView
-          onBack={() => setSidebarView("conversations")}
+          onBack={() => setSidebarView('conversations')}
           onSelectContact={onSelectContact}
         />
       )}
     </aside>
-  )
+  );
 }

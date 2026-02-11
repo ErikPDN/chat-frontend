@@ -1,4 +1,4 @@
-import { UserIcon } from 'lucide-react';
+import { UserIcon, Users } from 'lucide-react';
 import type { Conversation } from '../types/chat.types';
 import { formatConversationTime } from '../../../shared/utils/dateFormatter';
 
@@ -31,9 +31,13 @@ export default function ConversationCard({
           alt={conversation.name}
           className="w-12 h-12 rounded-full object-cover shrink-0"
         />
+      ) : conversation.isGroup ? (
+        <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center shrink-0">
+          <Users className="w-6 h-6 text-blue-600" />
+        </div>
       ) : (
-        <div className="w-12 h-12 rounded-full bg-zinc-700 flex items-center justify-center shrink-0">
-          <UserIcon className="w-6 h-6 text-zinc-400" />
+        <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center shrink-0">
+          <UserIcon className="w-6 h-6 text-blue-600" />
         </div>
       )}
 
@@ -61,7 +65,7 @@ export default function ConversationCard({
 
           {conversation.unreadCount > 0 && (
             <div className="shrink-0 flex items-center">
-              <span className="bg-blue-500 text-xs rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center text-center">
+              <span className="bg-blue-500 text-xs rounded-full min-w-5 h-5 px-1 flex items-center justify-center text-center">
                 {conversation.unreadCount > 99
                   ? '99+'
                   : conversation.unreadCount}
