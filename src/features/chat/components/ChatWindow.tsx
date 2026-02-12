@@ -278,11 +278,14 @@ export default function ChatWindow({ conversation }: ChatWindowProps) {
         </>
       )}
 
-      {chatWindowView === 'group-settings' && (
-        <ChatGroupSettingsUI onBack={() => setChatWindowView('messages')} />
+      {chatWindowView === 'group-settings' && conversation.isGroup && (
+        <ChatGroupSettingsUI
+          conversationId={conversation.id}
+          onBack={() => setChatWindowView('messages')}
+        />
       )}
 
-      {/* {chatWindowView === 'contact-info' && (
+      {/* {chatWindowView === 'contact-info' && !conversation.isGroup && (
         <div className="flex-1 flex items-center justify-center bg-zinc-900">
           <p className="text-zinc-400">Informações de contato (em breve)</p>
         </div>

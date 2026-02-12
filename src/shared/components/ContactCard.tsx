@@ -11,7 +11,7 @@ interface ContactCardProps {
   isAction?: boolean;
   showCheckbox?: boolean;
   isSelected?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const iconColorMap = {

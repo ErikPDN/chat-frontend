@@ -1,9 +1,12 @@
-import api from "../../../shared/utils/api";
-import type { Contact, UpdateContactRequest } from "../types/contact.types";
+import api from '../../../shared/utils/api';
+import type { Contact, UpdateContactRequest } from '../types/contact.types';
 
 export const contactService = {
   addContact: async (userId: string, nickname: string): Promise<Contact> => {
-    const response = await api.post('/contacts', { contactId: userId, nickname });
+    const response = await api.post('/contacts', {
+      contactId: userId,
+      nickname,
+    });
     return response.data;
   },
 
@@ -12,8 +15,18 @@ export const contactService = {
     return response.data;
   },
 
-  updateContactNickname: async (contactId: string, data: UpdateContactRequest): Promise<Contact> => {
-    const response = await api.patch(`/contacts/${contactId}`, { nickname: data.nickname });
+  getContactById: async (contactId: string): Promise<Contact> => {
+    const response = await api.get(`/contacts/${contactId}`);
+    return response.data;
+  },
+
+  updateContactNickname: async (
+    contactId: string,
+    data: UpdateContactRequest,
+  ): Promise<Contact> => {
+    const response = await api.patch(`/contacts/${contactId}`, {
+      nickname: data.nickname,
+    });
     return response.data;
   },
 
@@ -27,5 +40,5 @@ export const contactService = {
 
   unblockContact: async (contactId: string): Promise<void> => {
     await api.post(`/contacts/${contactId}/unblock`);
-  }
-}
+  },
+};

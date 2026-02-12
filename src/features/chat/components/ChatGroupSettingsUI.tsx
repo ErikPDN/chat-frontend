@@ -4,32 +4,30 @@ import {
   LogOut,
   Plus,
   Search,
-  User,
+  User as UserIcon,
   Pencil,
 } from 'lucide-react';
-import { useContacts } from '../../contact/hooks/useContacts';
-import { useFilteredContacts } from '../../../shared/hooks/useFilteredContacts';
 import ContactCard from '../../../shared/components/ContactCard';
 import { useState } from 'react';
 import LoadingSpinner from '../../../shared/components/LoadingSpinner';
 import IconCard from '../../../shared/components/IconCard';
-import type { Contact } from '../../contact/types/contact.types';
 import EditGroupModal from '../../group/components/EditGroupModal';
-
+import { useGroup } from '../../group/hooks/useGroup';
+import type { User } from '../../user/types/user.types';
 interface ChatGroupSettingsUIProps {
   onBack: () => void;
-  onSelectContact?: (contact: Contact) => void;
+  conversationId: string;
 }
 
 export default function ChatGroupSettingsUI({
   onBack,
-  onSelectContact,
+  conversationId,
 }: ChatGroupSettingsUIProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const { contacts, isLoading } = useContacts();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const filteredContacts = useFilteredContacts({ searchTerm, contacts });
+  const { group, isLoadingMembers } = useGroup(conversationId);
 
+  const handleMemberModalOpen = (member: User) => () => {};
   return (
     <div className="flex flex-col h-full overflow-y-auto px-2">
       <div className="justify-start px-2 py-2 mt-1">
@@ -44,11 +42,13 @@ export default function ChatGroupSettingsUI({
       <div className="mx-10">
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="w-24 h-24 rounded-full bg-blue-200 flex items-center justify-center">
-            <User size={48} className="text-blue-600" />
+            <UserIcon size={48} className="text-blue-600" />
           </div>
 
           <div className="flex items-center space-x-1.5 relative">
-            <h2 className="text-2xl text-white font-bold">Nome do Grupo</h2>
+            <h2 className="text-2xl text-white font-bold">
+              {group?.name || 'Nome do Grupo'}
+            </h2>
 
             <button
               className="absolute left-48 text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700/50 cursor-pointer"
@@ -65,7 +65,9 @@ export default function ChatGroupSettingsUI({
 
         <div className="py-3 space-y-2">
           <div className="flex items-center justify-between w-full">
-            <h3 className="text-sm font-bold text-white">3 Membros</h3>
+            <h3 className="text-sm font-bold text-white">
+              {group?.membersId.length || 0} Membros
+            </h3>
 
             <button className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700/50 cursor-pointer">
               <Search size={20} />
@@ -73,22 +75,20 @@ export default function ChatGroupSettingsUI({
           </div>
 
           <>
-            {isLoading ? (
+            {isLoadingMembers ? (
               <LoadingSpinner size="md" />
-            ) : filteredContacts.length > 0 ? (
+            ) : (group?.membersId?.length ?? 0) > 0 ? (
               <div className="flex flex-col space-y-2">
-                {filteredContacts.map((contact) => (
+                {group?.membersId.map((member) => (
                   <ContactCard
-                    key={contact._id}
-                    id={contact._id}
-                    name={contact.nickname}
-                    status={contact.contactId.email}
+                    key={member.id}
+                    id={member.id}
+                    name={member.username}
+                    status={member.email}
                     avatar={
-                      contact.contactId.avatar || (
-                        <User className="text-blue-600" />
-                      )
+                      member.avatarUrl || <UserIcon className="text-blue-600" />
                     }
-                    onClick={() => onSelectContact?.(contact)}
+                    onClick={handleMemberModalOpen(member)}
                   />
                 ))}
               </div>
