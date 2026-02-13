@@ -34,7 +34,7 @@ export default function EditGroupModal({ onClose }: EditGroupModalProps) {
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center background-blur-sm p-4">
       <div className="bg-zinc-800 rounded-2xl shadow-2xl w-full max-w-md flex flex-col p-3 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl text-white font-bold mx-2">Editar Grupo</h2>
+          <h2 className="text-md text-white font-bold mx-2">Editar Grupo</h2>
 
           <button
             onClick={onClose}
@@ -109,13 +109,13 @@ export default function EditGroupModal({ onClose }: EditGroupModalProps) {
               type="button"
               variant="secondary"
               onClick={onClose}
-              className="w-24"
+              className="w-24 h-10"
               disabled={isLoading}
             >
               Cancelar
             </Button>
 
-            <Button type="submit" isLoading={isLoading} className="w-24">
+            <Button type="submit" isLoading={isLoading} className="w-24 h-10">
               Salvar
             </Button>
           </div>

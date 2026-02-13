@@ -1,5 +1,5 @@
-import { Search, X } from "lucide-react";
-import { useState } from "react";
+import { Search, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface SearchBarProps {
   placeholder?: string;
@@ -8,11 +8,11 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({
-  placeholder = "Pesquise por nome ou mensagem",
+  placeholder = 'Pesquise por nome ou mensagem',
   onSearch,
-  className = "",
+  className = '',
 }: SearchBarProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -21,23 +21,20 @@ export default function SearchBar({
   };
 
   const handleClear = () => {
-    setSearchTerm("");
-    onSearch?.("");
+    setSearchTerm('');
+    onSearch?.('');
   };
 
   return (
-    <div className={`relative ${className} px-3`}>
+    <div className={`relative ${className} px-2`}>
       <div className="absolute left-6 top-1/2 -translate-y-1/2 pointer-events-none">
-        <Search
-          size={18}
-          className="text-zinc-400"
-        />
+        <Search size={18} className="text-zinc-400" />
       </div>
       <input
         type="text"
         placeholder={placeholder}
         className={`
-          w-full py-2 pl-10 pr-10
+          w-full py-2 pl-12 pr-10
           bg-zinc-700/50 
           rounded-lg
           text-white text-sm

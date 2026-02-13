@@ -14,6 +14,7 @@ import IconCard from '../../../shared/components/IconCard';
 import EditGroupModal from '../../group/components/EditGroupModal';
 import { useGroup } from '../../group/hooks/useGroup';
 import type { User } from '../../user/types/user.types';
+import SearchMemberModal from '../../group/components/SearchMemberModal';
 interface ChatGroupSettingsUIProps {
   onBack: () => void;
   conversationId: string;
@@ -23,11 +24,17 @@ export default function ChatGroupSettingsUI({
   onBack,
   conversationId,
 }: ChatGroupSettingsUIProps) {
-  const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalSearchMembersOpen, setIsModalSearchMembersOpen] =
+    useState(false);
   const { group, isLoadingMembers } = useGroup(conversationId);
 
   const handleMemberModalOpen = (member: User) => () => {};
+
+  const handleOpenSearchMembersModal = () => {
+    setIsModalSearchMembersOpen(true);
+  };
+
   return (
     <div className="flex flex-col h-full overflow-y-auto px-2">
       <div className="justify-start px-2 py-2 mt-1">
@@ -69,7 +76,10 @@ export default function ChatGroupSettingsUI({
               {group?.membersId.length || 0} Membros
             </h3>
 
-            <button className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700/50 cursor-pointer">
+            <button
+              onClick={handleOpenSearchMembersModal}
+              className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700/50 cursor-pointer"
+            >
               <Search size={20} />
             </button>
           </div>
@@ -127,6 +137,13 @@ export default function ChatGroupSettingsUI({
       </div>
 
       {isModalOpen && <EditGroupModal onClose={() => setIsModalOpen(false)} />}
+      {isModalSearchMembersOpen && (
+        <SearchMemberModal
+          onClose={() => setIsModalSearchMembersOpen(false)}
+          loadingMembers={isLoadingMembers}
+          members={group?.membersId}
+        />
+      )}
     </div>
   );
 }

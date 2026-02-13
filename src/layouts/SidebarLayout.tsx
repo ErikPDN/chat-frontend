@@ -48,7 +48,7 @@ export default function SidebarLayout({
           </div>
 
           <div className="px-2">
-            <SearchBar />
+            <SearchBar className="px-3" />
 
             <div className="mt-4 px-4">
               <div className="flex gap-2">
